@@ -1,0 +1,202 @@
+/* ============ Reset & Base ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #ede9e3;
+  font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+  overscroll-behavior: none;
+}
+
+/* ============ Fixed Viewport ============ */
+.viewport {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  background: #ede9e3;
+}
+
+/* ============ Scale Wrapper — viewport-center anchor ============ */
+/*  top:50%, left:50% places its origin at viewport center.
+    transform-origin:0 0 means scale() expands outward from viewport center.
+    overflow:hidden ensures GPU compositing clips correctly.
+    JS applies: scaler.style.transform = "scale(s)"                         */
+#cardsScaler {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0 0;
+  transform: scale(1);
+  will-change: transform;
+}
+
+/* ============ Panning state — suppress hover effects while strip is moving ============ */
+/* JS adds/removes this class on body during scroll animation */
+body.is-panning .card { pointer-events: none; }
+body.is-panning .p2-strip { bottom: -60px !important; transition: none !important; }
+
+/* ============ Card Strip ============ */
+/*  Position anchored to scaler origin (= viewport center).
+    JS applies: translateX(panPos - 600) translateY(-50%)
+    so that card 0's center aligns with viewport center when panPos = 0.    */
+.card-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  will-change: transform;
+}
+
+/* ============ Individual Card ============ */
+.card {
+  width: 1200px;
+  height: 700px;
+  background: #fff;
+  border-radius: 0;                 /* sharp corners — design spec */
+  box-shadow: 0 4px 48px rgba(0,0,0,0.10);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+    transition: box-shadow 0.3s ease;
+}
+.card:hover {
+  box-shadow: 0 8px 60px rgba(0,0,0,0.16);
+}
+
+/* ============ Minimap ============
+   Two-state ticks:
+   · default — 6×12 gray-bordered frame (0.5:1)
+   · .active — 24×12 black solid block (2:1)
+   CSS width transition smooths state change; no floating tracker element.
+   =============================================================== */
+.minimap {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 200;
+}
+
+.mm-tick {
+  width: 6px;                                /* 0.5 : 1 (w : h) */
+  height: 12px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: width        0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              background   0.2s ease,
+              border-color 0.2s ease;
+}
+.mm-tick:hover {
+  border-color: rgba(0, 0, 0, 0.55);
+}
+
+.mm-tick.active {
+  width: 24px;                               /* 2 : 1 (w : h) */
+  background: #000;
+  border-color: #000;
+}
+.mm-tick.active:hover {
+  background: #000;
+  border-color: #000;
+}
+
+/* ============ External card labels (outside cards, above strip) ============ */
+.ext-label {
+  position: absolute;
+  top: -36px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.45);
+  letter-spacing: -0.01em;
+  font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============ Edit toggle button ============ */
+.edit-toggle {
+  position: fixed;
+  top: 16px; right: 20px;
+  z-index: 300;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s;
+}
+.edit-toggle:hover { background: #fff; }
+.edit-toggle.is-active { background: #111; color: #f59e0b; border-color: #111; }
+
+/* ⚠ DEV-ONLY · language toggle (top-right, left of edit-toggle).
+   Marked with "DEV" badge so it's visually clear it should be
+   removed (and its <button> markup + <script>) before production. */
+.lang-toggle {
+  position: fixed;
+  top: 16px; right: 105px;          /* edit-toggle (right:20) is ~75px wide + 10 gap */
+  z-index: 301;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 6px;
+  padding: 5px 12px 5px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: #111;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s;
+}
+.lang-toggle:hover { background: #fff; }
+.lang-toggle-dev {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 1px 4px;
+  border-radius: 3px;
+  line-height: 1;
+}
+.lang-toggle-label {
+  font-weight: 500;
+  min-width: 14px;
+  text-align: center;
+}
+
+/* ============ Footer credit — bottom-center, 24px from edge ============ */
+.site-footer {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "PingFang SC", -apple-system, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  pointer-events: none;          /* never blocks card interactions */
+  user-select: none;
+  z-index: 150;                  /* below toggle (300) and warn (9000) */
+}

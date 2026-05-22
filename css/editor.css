@@ -1,0 +1,45 @@
+/* ============ Edit Banner ============ */
+.edit-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 44px;
+  background: #f59e0b;
+  color: #111;
+  font-size: 12px;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  z-index: 500;
+  display: none;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+}
+
+.edit-banner.is-visible { display: flex; }
+.edit-banner-text { flex: 1; text-align: center; }
+.edit-banner-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.edit-save-btn,
+.edit-clear-btn {
+  padding: 5px 14px;
+  border: none;
+  border-radius: 5px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-save-btn  { background: #111; color: #f59e0b; }
+.edit-clear-btn { background: rgba(0,0,0,0.12); color: #111; }
+
+/* ============ Edit mode image highlight ============ */
+body.edit-mode img:hover {
+  outline: 2px solid #f59e0b;
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+/* ============ P2 drag states ============ */
+.p2-thumb.dragging  { opacity: 0.35; cursor: grabbing !important; }
+.p2-thumb.drag-over { outline: 2px dashed #f59e0b; outline-offset: -2px; }

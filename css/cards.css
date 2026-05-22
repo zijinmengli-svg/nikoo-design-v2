@@ -1,0 +1,191 @@
+/* ============ Shared utilities ============ */
+
+/* Small label top-left of each card */
+.card-label {
+  position: absolute;
+  top: 24px; left: 28px;
+  font-size: 9px;
+  color: #bbb;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 10;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+}
+
+/* P2 hover strip — shared by cards 01–05
+   Slides up from below the card on hover */
+.p2-strip {
+  position: absolute;
+  bottom: -60px;
+  left: 0; right: 0;
+  height: 60px;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 32px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  transition: bottom 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 20;
+}
+
+.card:hover .p2-strip { bottom: 0; }
+
+.p2-thumb {
+  width: 36px; height: 46px;
+  border-radius: 0;                  /* sharp corners — design spec */
+  object-fit: cover;
+  background: #e0e0e0;
+  flex-shrink: 0;
+}
+
+.p2-names {
+  font-size: 11px;
+  color: #999;
+  margin-left: auto;
+  white-space: nowrap;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+}
+
+/* P2 thumbnail links */
+.p2-thumb-link {
+  display: block;
+  flex-shrink: 0;
+  text-decoration: none;
+  border-radius: 0;
+  overflow: hidden;
+}
+.p2-thumb-link:hover .p2-thumb { opacity: 0.8; }
+.p2-thumb-link .p2-thumb { transition: opacity 0.2s; }
+
+/* ============ Card click interaction ============ */
+.card-clickable { cursor: pointer; }
+.card-clickable:active {
+  opacity: 0.96;
+  transition: opacity 0.1s ease;
+}
+
+/* ===========================================================
+   Card 00 — 画板
+   White bg · Yellow circle 700×700 at left:500 top:0
+   Bio text at top-left (47,38) font 80px
+   =========================================================== */
+.card-00 { background: #fff; }
+
+.c00-circle {
+  position: absolute;
+  left: 500px; top: 0;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: #FFF600;
+  z-index: 1;
+}
+
+.c00-bio {
+  position: absolute;
+  left: 47px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  line-height: 1.06;
+}
+
+.c00-bio span {
+  display: block;
+  font-size: 80px;
+  font-weight: 800;
+  color: #242424;
+  letter-spacing: -0.03em;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+}
+
+/* Rauno-style alternate-line indent */
+.c00-bio span:nth-child(even) { padding-left: 60px; }
+
+/* ===========================================================
+   Card 01 — AI 设计
+   White bg · Orange circle 700×700 at left:500 top:0
+   "A" at (38,−114) and "I" at (497,−114) font 600px
+   =========================================================== */
+.card-01 { background: #fff; }
+
+.c01-circle {
+  position: absolute;
+  left: 500px; top: 0;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: #FF5800;
+  z-index: 1;
+}
+
+/* Shared style for both letter elements */
+.c01-a,
+.c01-i {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateX(var(--parallax-x, 0px));
+  font-size: 600px;
+  font-weight: 900;
+  color: #242424;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  z-index: 2;
+  user-select: none;
+}
+
+.c01-a { left: 38px; }
+.c01-i { left: 497px; }
+
+/* ===========================================================
+   Cards 02–05 — Category cards
+   Large text (400px) flush top-left, overflows card width
+   No decorative circles — card bg is clipping mask
+   =========================================================== */
+
+/* Shared base for the overflow text on category cards */
+.c02-text, .c03-text, .c04-text, .c05-text {
+  position: absolute;
+  left: 38px;
+  top: 50%;
+  transform: translateY(-50%) translateX(var(--parallax-x, 0px));
+  font-size: 400px;
+  font-weight: 900;
+  color: #242424;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  white-space: nowrap;       /* don't wrap — let card overflow:hidden clip */
+  z-index: 2;
+  user-select: none;
+}
+
+.card-02 { background: #fff; }
+.card-03 { background: #fff; }
+.card-04 { background: #fff; }
+.card-05 { background: #fff; }
+
+/* ===========================================================
+   Card 06 — 设计探索
+   Yellow bg (#FFF700) · Manifesto text at (53,33) font 90px
+   =========================================================== */
+.card-06 { background: #FFF700; }
+
+.c06-manifesto {
+  position: absolute;
+  left: 53px;
+  top: 50%;
+  transform: translateY(-50%) translateX(var(--parallax-x, 0px));
+  z-index: 5;
+}
+
+.c06-manifesto p {
+  font-size: 90px;
+  font-weight: 800;
+  color: #000000;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-family: -apple-system, "Helvetica Neue", sans-serif;
+}

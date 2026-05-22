@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bin Li · Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+
+  <!-- Fixed viewport: always covers full window -->
+  <div class="viewport">
+
+    <!-- Minimap: top-center, 7 clickable ticks injected by scroll.js -->
+    <nav class="minimap" id="minimap" aria-label="Card navigation"></nav>
+
+    <!-- Scale wrapper: viewport-center anchor, scale applied here -->
+    <div id="cardsScaler">
+
+    <!-- Card strip: translateX updated by scroll.js -->
+    <div class="card-strip" id="cardStrip">
+
+      <!-- External labels: positioned above each card (cards 01–06 only) -->
+      <div class="ext-label" style="left:1240px;">AI 设计</div>
+      <div class="ext-label" style="left:2480px;">C端体验设计</div>
+      <div class="ext-label" style="left:3720px;">B端体验设计</div>
+      <div class="ext-label" style="left:4960px;">视觉设计</div>
+      <div class="ext-label" style="left:6200px;">动效设计</div>
+      <div class="ext-label" style="left:7440px;">设计探索</div>
+
+      <!-- Card 00 — 画板 -->
+      <div class="card card-00" id="card-00">
+        <div class="c00-circle"></div>
+        <div class="c00-bio">
+          <span data-en="Bin Li"              data-zh="李彬">Bin Li</span>
+          <span data-en="is a Senior"         data-zh="是一位资深的">is a Senior</span>
+          <span data-en="Product Designer"    data-zh="产品设计师">Product Designer</span>
+          <span data-en="Crafting AI Products" data-zh="打磨 AI 产品">Crafting AI Products</span>
+          <span data-en="that Grow"           data-zh="让其生长">that Grow</span>
+          <span data-en="and Matter"          data-zh="也有价值">and Matter</span>
+        </div>
+      </div>
+
+      <!-- Card 01 — AI 设计 -->
+      <div class="card card-01 card-clickable" id="card-01" data-href="../nikoo-design-website/project.html?p=miaosheng">
+        <div class="c01-a">A</div>
+        <div class="c01-i">I</div>
+        <div class="c01-circle"></div>
+        <div class="p2-strip">
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=miaosheng">
+            <img class="p2-thumb" src="../nikoo-design-website/images/秒省/miaosheng-01.webp" alt="秒省助手">
+          </a>
+          <span class="p2-names">秒省助手</span>
+        </div>
+      </div>
+
+      <!-- Card 02 — C端体验设计 -->
+      <div class="card card-02 card-clickable" id="card-02" data-href="../nikoo-design-website/category.html?cat=consumer-ux">
+        <div class="c02-text" data-en="Consumer UX" data-zh="用户体验">Consumer UX</div>
+        <div class="p2-strip">
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=pet">
+            <img class="p2-thumb" src="../nikoo-design-website/images/宠胖胖/A1-01.webp" alt="宠胖胖">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=flashparty">
+            <img class="p2-thumb" src="../nikoo-design-website/images/闪聚/A2-01.webp" alt="闪聚">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=blockpixel">
+            <img class="p2-thumb" src="../nikoo-design-website/images/Block Pixel Puzzle/06-01.webp" alt="Block Pixel Puzzle">
+          </a>
+          <span class="p2-names">宠胖胖 · 闪聚 · Block Pixel Puzzle</span>
+        </div>
+      </div>
+
+      <!-- Card 03 — B端体验设计 -->
+      <div class="card card-03 card-clickable" id="card-03" data-href="../nikoo-design-website/category.html?cat=enterprise-ux">
+        <div class="c03-text" data-en="Enterprise UX" data-zh="企业系统">Enterprise UX</div>
+        <div class="p2-strip">
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=crm">
+            <img class="p2-thumb" src="../nikoo-design-website/images/OTO 保险业务 销售CRM系统设计/07-01.webp" alt="OTO 保险 CRM">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=capybara">
+            <img class="p2-thumb" src="../nikoo-design-website/images/水豚大夫-宠胖胖Saas/08-01.webp" alt="水豚大夫">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=kejiji">
+            <img class="p2-thumb" src="../nikoo-design-website/images/客集集直播/05-01.webp" alt="客集集直播">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=otherui">
+            <img class="p2-thumb" src="../nikoo-design-website/images/其他一些UI设计/08-04.webp" alt="其他 UI 设计">
+          </a>
+          <span class="p2-names">OTO CRM · 水豚大夫 · 客集集直播 · 其他 UI</span>
+        </div>
+      </div>
+
+      <!-- Card 04 — 视觉设计（4 个项目，category 列表页）-->
+      <div class="card card-04 card-clickable" id="card-04" data-href="../nikoo-design-website/category.html?cat=visual">
+        <div class="c04-text" data-en="Visual" data-zh="视觉设计">Visual</div>
+        <div class="p2-strip">
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=visual-01">
+            <img class="p2-thumb" src="../nikoo-design-website/images/视觉设计/09-01.webp" alt="视觉作品 01">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=visual-02">
+            <img class="p2-thumb" src="../nikoo-design-website/images/视觉设计/09-02.webp" alt="视觉作品 02">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=visual-03">
+            <img class="p2-thumb" src="../nikoo-design-website/images/视觉设计/A6-6.webp" alt="视觉作品 03">
+          </a>
+          <a class="p2-thumb-link" href="../nikoo-design-website/project.html?p=visual-04">
+            <img class="p2-thumb" src="../nikoo-design-website/images/视觉设计/D1-7.webp" alt="视觉作品 04">
+          </a>
+          <span class="p2-names">视觉作品 01 · 02 · 03 · 04</span>
+        </div>
+      </div>
+
+      <!-- Card 05 — 动效设计（masonry 列表 · 卡片点击播放）-->
+      <div class="card card-05 card-clickable" id="card-05" data-href="../nikoo-design-website/category.html?cat=motion">
+        <div class="c05-text" data-en="Motion" data-zh="动效设计">Motion</div>
+        <div class="p2-strip">
+          <img class="p2-thumb" src="../nikoo-design-website/images/动效/cpp点击动画集合.gif" alt="点击动画集合">
+          <img class="p2-thumb" src="../nikoo-design-website/images/动效/cpp左滑动画集合.gif" alt="左滑动画集合">
+          <img class="p2-thumb" src="../nikoo-design-website/images/动效/cpp商品卡片_00017_iSpt.gif" alt="商品卡片">
+          <img class="p2-thumb" src="../nikoo-design-website/images/动效/ms加载展示效果_00000_iSpt.webp" alt="加载效果">
+          <span class="p2-names">交互动效 · 界面微交互 · IP 动画</span>
+        </div>
+      </div>
+
+      <!-- Card 06 — 设计探索 -->
+      <div class="card card-06" id="card-06">
+        <div class="c06-manifesto">
+          <p data-en="Make it simple." data-zh="保持简洁。">Make it simple.</p>
+          <p data-en="Make it clear."  data-zh="保持清晰。">Make it clear.</p>
+          <p data-en="Make it human."  data-zh="充满温度。">Make it human.</p>
+          <p data-en="Make it last."   data-zh="经久不衰。">Make it last.</p>
+          <p data-en="Make it."        data-zh="去做。">Make it.</p>
+        </div>
+      </div>
+
+    </div><!-- /card-strip -->
+
+    </div><!-- /cardsScaler -->
+  </div>
+
+  <!-- Edit mode banner (hidden until edit mode activated) -->
+  <div class="edit-banner" id="editBanner">
+    <span class="edit-banner-text">✏ 编辑模式 · 右键图片替换/删除 · 拖拽 P2 缩略图调整顺序</span>
+    <div class="edit-banner-actions">
+      <button class="edit-save-btn" id="editSaveBtn">💾 保存</button>
+      <button class="edit-clear-btn" id="editClearBtn">清除</button>
+    </div>
+  </div>
+
+  <!-- Edit toggle button -->
+  <button class="edit-toggle" id="editToggle" title="Toggle edit mode">✏ Edit</button>
+
+  <!-- ⚠ DEV ONLY · i18n toggle — remove before production deploy -->
+  <button class="lang-toggle" id="langToggle" title="切换语言 / Toggle language">
+    <span class="lang-toggle-dev">DEV</span><span class="lang-toggle-label">EN</span>
+  </button>
+
+  <!-- Footer credit -->
+  <div class="site-footer" data-en="This site is built solo by the designer — AI tools assisted throughout, including every line of code you're reading right now."
+                            data-zh="本站由设计师独立完成，AI 工具参与全程——包括你现在看到的每一行代码。">本站由设计师独立完成，AI 工具参与全程——包括你现在看到的每一行代码。</div>
+
+  <!-- Narrow viewport warning -->
+  <div id="narrowWarn" style="display:none;position:fixed;inset:0;background:#ede9e3;z-index:9000;align-items:center;justify-content:center;font-size:16px;color:#555;text-align:center;font-family:-apple-system,sans-serif;padding:40px;">
+    <div><div style="font-size:32px;margin-bottom:16px;">🖥</div>请在桌面端浏览器中查看（建议宽度 ≥ 1280px）</div>
+  </div>
+
+  <script src="js/scroll.js"></script>
+  <script src="js/editor.js"></script>
+  <script>
+    /* Card click → project detail (not triggered by P2 thumbnail links) */
+    document.querySelectorAll('.card-clickable').forEach(function(card) {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.p2-thumb-link')) return; // let link handle it
+        if (document.body.classList.contains('edit-mode')) return; // no nav in edit mode
+        var href = card.getAttribute('data-href');
+        if (href) window.location.href = href;
+      });
+    });
+  </script>
+  <script>
+    (function(){
+      var warn = document.getElementById('narrowWarn');
+      function check(){ warn.style.display = window.innerWidth < 780 ? 'flex' : 'none'; }
+      check();
+      window.addEventListener('resize', check);
+    })();
+  </script>
+
+  <!-- ⚠ DEV ONLY · i18n toggle logic — remove before production deploy -->
+  <script>
+    (function () {
+      var LANG_KEY = 'nikoo-dev-lang';
+      var btn = document.getElementById('langToggle');
+      var lblEl = btn.querySelector('.lang-toggle-label');
+      var nodes = document.querySelectorAll('[data-en][data-zh]');
+
+      function apply(lang) {
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        nodes.forEach(function (n) { n.textContent = n.dataset[lang]; });
+        lblEl.textContent = lang === 'zh' ? 'EN' : '中';  /* shows the OTHER lang */
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+      }
+
+      var saved = 'zh';
+      try { saved = localStorage.getItem(LANG_KEY) || 'zh'; } catch (e) {}
+      apply(saved);
+
+      btn.addEventListener('click', function () {
+        var cur  = (document.documentElement.lang || '').indexOf('zh') === 0 ? 'zh' : 'en';
+        apply(cur === 'zh' ? 'en' : 'zh');
+      });
+    })();
+  </script>
+</body>
+</html>
