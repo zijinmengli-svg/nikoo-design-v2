@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Category · Bin Li Portfolio</title>
+  <title>作品分类</title>
   <link rel="stylesheet" href="css/detail.css">
 </head>
 <body>
@@ -20,11 +20,11 @@
       var category = data && data.categories ? data.categories[key] : null;
 
       if (!category) {
-        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">Home</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">Not Found</div><h1 class="detail-title">Category not found</h1><p class="detail-summary">The requested category does not exist in this portfolio build.</p></section>';
+        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">首页</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">未找到</div><h1 class="detail-title">分类不存在</h1><p class="detail-summary">当前链接对应的分类不存在。</p></section>';
         return;
       }
 
-      document.title = category.title + ' · Bin Li Portfolio';
+      document.title = category.title + ' · 作品分类';
 
       var cardsHtml = category.projects.map(function (projectKey) {
         var project = data.projects[projectKey];
@@ -38,7 +38,7 @@
                 '<h2 class="category-item-title">' + project.title + '</h2>' +
                 '<p class="category-item-summary">' + project.summary + '</p>' +
               '</div>' +
-              '<div class="category-item-link">Open project</div>' +
+              '<div class="category-item-link">查看详情</div>' +
             '</div>' +
           '</a>';
       }).join('');
@@ -46,11 +46,11 @@
       app.innerHTML =
         '<div class="detail-topbar">' +
           '<div class="detail-nav">' +
-            '<a class="detail-link" href="index.html">Home</a>' +
+            '<a class="detail-link" href="index.html">首页</a>' +
           '</div>' +
         '</div>' +
         '<header class="detail-frame category-header">' +
-          '<div class="detail-kicker">Category</div>' +
+          '<div class="detail-kicker">分类</div>' +
           '<h1 class="category-title">' + category.title + '</h1>' +
           '<p class="category-subtitle">' + category.subtitle + '</p>' +
         '</header>' +
