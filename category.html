@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
       var category = data && data.categories ? data.categories[key] : null;
 
       if (!category) {
-        app.innerHTML = '<div class="detail-topbar"><a class="detail-back" href="index.html">返回首页</a></div><section class="detail-card detail-meta"><div><div class="detail-kicker">Not Found</div><h1 class="detail-title">未找到分类</h1><p class="detail-summary">当前链接对应的分类不存在。</p></div></section>';
+        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">Home</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">Not Found</div><h1 class="detail-title">Category not found</h1><p class="detail-summary">The requested category does not exist in this portfolio build.</p></section>';
         return;
       }
 
@@ -30,18 +30,26 @@
         var project = data.projects[projectKey];
         if (!project) return '';
         return '' +
-          '<a class="detail-card category-item" href="project.html?p=' + projectKey + '">' +
+          '<a class="detail-frame category-item" href="project.html?p=' + projectKey + '">' +
             '<img class="category-item-cover" src="' + project.cover + '" alt="' + project.title + '">' +
-            '<h2 class="category-item-title">' + project.title + '</h2>' +
-            '<p class="category-item-summary">' + project.summary + '</p>' +
+            '<div class="category-item-copy">' +
+              '<div>' +
+                '<div class="detail-kicker">' + project.category + '</div>' +
+                '<h2 class="category-item-title">' + project.title + '</h2>' +
+                '<p class="category-item-summary">' + project.summary + '</p>' +
+              '</div>' +
+              '<div class="category-item-link">Open project</div>' +
+            '</div>' +
           '</a>';
       }).join('');
 
       app.innerHTML =
         '<div class="detail-topbar">' +
-          '<a class="detail-back" href="index.html">返回首页</a>' +
+          '<div class="detail-nav">' +
+            '<a class="detail-link" href="index.html">Home</a>' +
+          '</div>' +
         '</div>' +
-        '<header class="category-header">' +
+        '<header class="detail-frame category-header">' +
           '<div class="detail-kicker">Category</div>' +
           '<h1 class="category-title">' + category.title + '</h1>' +
           '<p class="category-subtitle">' + category.subtitle + '</p>' +

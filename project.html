@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
       var project = data && data.projects ? data.projects[key] : null;
 
       if (!project) {
-        app.innerHTML = '<div class="detail-topbar"><a class="detail-back" href="index.html">返回首页</a></div><section class="detail-card detail-meta"><div><div class="detail-kicker">Not Found</div><h1 class="detail-title">未找到项目</h1><p class="detail-summary">当前链接对应的项目不存在。</p></div></section>';
+        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">Home</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">Not Found</div><h1 class="detail-title">Project not found</h1><p class="detail-summary">The requested project does not exist in this portfolio build.</p></section>';
         return;
       }
 
@@ -28,24 +28,27 @@
 
       var assetsHtml = project.assets.map(function (asset) {
         if (/\.mp4$/i.test(asset)) {
-          return '<section class="detail-card detail-asset"><video src="' + asset + '" controls playsinline preload="metadata"></video></section>';
+          return '<section class="detail-frame detail-asset"><video src="' + asset + '" controls playsinline preload="metadata"></video></section>';
         }
-        return '<section class="detail-card detail-asset"><img src="' + asset + '" alt="' + project.title + '"></section>';
+        return '<section class="detail-frame detail-asset"><img src="' + asset + '" alt="' + project.title + '"></section>';
       }).join('');
 
       app.innerHTML =
         '<div class="detail-topbar">' +
-          '<a class="detail-back" href="javascript:history.back()">返回</a>' +
-          '<a class="detail-home" href="index.html">首页</a>' +
+          '<div class="detail-nav">' +
+            '<a class="detail-link" href="javascript:history.back()">Back</a>' +
+            '<a class="detail-link" href="index.html">Home</a>' +
+          '</div>' +
         '</div>' +
-        '<section class="detail-hero">' +
-          '<div class="detail-card"><img class="detail-cover" src="' + project.cover + '" alt="' + project.title + '"></div>' +
-          '<div class="detail-card detail-meta">' +
+        '<section class="detail-frame detail-hero">' +
+          '<div><img class="detail-cover" src="' + project.cover + '" alt="' + project.title + '"></div>' +
+          '<div class="detail-copy">' +
             '<div>' +
               '<div class="detail-kicker">' + project.category + '</div>' +
               '<h1 class="detail-title">' + project.title + '</h1>' +
               '<p class="detail-summary">' + project.summary + '</p>' +
             '</div>' +
+            '<div class="detail-meta">Selected project · ' + project.assets.length + ' media item' + (project.assets.length > 1 ? 's' : '') + '</div>' +
           '</div>' +
         '</section>' +
         '<section class="detail-grid">' + assetsHtml + '</section>';

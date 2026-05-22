@@ -1,7 +1,7 @@
 window.NIKOO_SITE_DATA = {
   categories: {
     "consumer-ux": {
-      title: "Consumer UX",
+      title: "Consumer Products",
       subtitle: "Product experience and interface design for consumer-facing scenarios.",
       projects: ["pet", "flashparty", "blockpixel"]
     },
@@ -86,7 +86,7 @@ window.NIKOO_SITE_DATA = {
       ]
     },
     kejiji: {
-      title: "Kejiji Live",
+      title: "Kejiji",
       category: "Enterprise UX",
       summary: "Platform and operations-backend design for live commerce workflows.",
       cover: "images/07-01.png",
@@ -97,7 +97,7 @@ window.NIKOO_SITE_DATA = {
       ]
     },
     otherui: {
-      title: "Other UI Work",
+      title: "UI Studies",
       category: "Enterprise UX",
       summary: "A collection of multi-format UI explorations and component styles.",
       cover: "images/08-01.png",
