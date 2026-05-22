@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Category · Bin Li Portfolio</title>
+  <link rel="stylesheet" href="css/detail.css">
+</head>
+<body>
+  <main class="detail-shell">
+    <div class="detail-wrap" id="app"></div>
+  </main>
+  <script src="js/site-data.js"></script>
+  <script>
+    (function () {
+      var data = window.NIKOO_SITE_DATA;
+      var app = document.getElementById('app');
+      var params = new URLSearchParams(window.location.search);
+      var key = params.get('cat');
+      var category = data && data.categories ? data.categories[key] : null;
+
+      if (!category) {
+        app.innerHTML = '<div class="detail-topbar"><a class="detail-back" href="index.html">返回首页</a></div><section class="detail-card detail-meta"><div><div class="detail-kicker">Not Found</div><h1 class="detail-title">未找到分类</h1><p class="detail-summary">当前链接对应的分类不存在。</p></div></section>';
+        return;
+      }
+
+      document.title = category.title + ' · Bin Li Portfolio';
+
+      var cardsHtml = category.projects.map(function (projectKey) {
+        var project = data.projects[projectKey];
+        if (!project) return '';
+        return '' +
+          '<a class="detail-card category-item" href="project.html?p=' + projectKey + '">' +
+            '<img class="category-item-cover" src="' + project.cover + '" alt="' + project.title + '">' +
+            '<h2 class="category-item-title">' + project.title + '</h2>' +
+            '<p class="category-item-summary">' + project.summary + '</p>' +
+          '</a>';
+      }).join('');
+
+      app.innerHTML =
+        '<div class="detail-topbar">' +
+          '<a class="detail-back" href="index.html">返回首页</a>' +
+        '</div>' +
+        '<header class="category-header">' +
+          '<div class="detail-kicker">Category</div>' +
+          '<h1 class="category-title">' + category.title + '</h1>' +
+          '<p class="category-subtitle">' + category.subtitle + '</p>' +
+        '</header>' +
+        '<section class="category-grid">' + cardsHtml + '</section>';
+    })();
+  </script>
+</body>
+</html>

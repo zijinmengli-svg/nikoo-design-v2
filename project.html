@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project · Bin Li Portfolio</title>
+  <link rel="stylesheet" href="css/detail.css">
+</head>
+<body>
+  <main class="detail-shell">
+    <div class="detail-wrap" id="app"></div>
+  </main>
+  <script src="js/site-data.js"></script>
+  <script>
+    (function () {
+      var data = window.NIKOO_SITE_DATA;
+      var app = document.getElementById('app');
+      var params = new URLSearchParams(window.location.search);
+      var key = params.get('p');
+      var project = data && data.projects ? data.projects[key] : null;
+
+      if (!project) {
+        app.innerHTML = '<div class="detail-topbar"><a class="detail-back" href="index.html">返回首页</a></div><section class="detail-card detail-meta"><div><div class="detail-kicker">Not Found</div><h1 class="detail-title">未找到项目</h1><p class="detail-summary">当前链接对应的项目不存在。</p></div></section>';
+        return;
+      }
+
+      document.title = project.title + ' · Bin Li Portfolio';
+
+      var assetsHtml = project.assets.map(function (asset) {
+        if (/\.mp4$/i.test(asset)) {
+          return '<section class="detail-card detail-asset"><video src="' + asset + '" controls playsinline preload="metadata"></video></section>';
+        }
+        return '<section class="detail-card detail-asset"><img src="' + asset + '" alt="' + project.title + '"></section>';
+      }).join('');
+
+      app.innerHTML =
+        '<div class="detail-topbar">' +
+          '<a class="detail-back" href="javascript:history.back()">返回</a>' +
+          '<a class="detail-home" href="index.html">首页</a>' +
+        '</div>' +
+        '<section class="detail-hero">' +
+          '<div class="detail-card"><img class="detail-cover" src="' + project.cover + '" alt="' + project.title + '"></div>' +
+          '<div class="detail-card detail-meta">' +
+            '<div>' +
+              '<div class="detail-kicker">' + project.category + '</div>' +
+              '<h1 class="detail-title">' + project.title + '</h1>' +
+              '<p class="detail-summary">' + project.summary + '</p>' +
+            '</div>' +
+          '</div>' +
+        '</section>' +
+        '<section class="detail-grid">' + assetsHtml + '</section>';
+    })();
+  </script>
+</body>
+</html>
