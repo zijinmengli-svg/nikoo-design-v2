@@ -365,17 +365,37 @@
 
       /* Wait until every <img> inside `root` has loaded (or errored) before cb. */
       function whenImagesLoaded(root, cb) {
-        var imgs = root.querySelectorAll('img');
-        var pending = imgs.length;
-        if (pending === 0) { cb(); return; }
+        /* Collect <img> AND <video poster=...> — videos use poster as their
+           visible content (with preload=none), so we must wait for the poster
+           to load before measuring heights. Otherwise masonry runs at 0 height
+           and stacks every card at (0,0). */
+        var imgs   = Array.prototype.slice.call(root.querySelectorAll('img'));
+        var videos = Array.prototype.slice.call(root.querySelectorAll('video[poster]'));
+        var total  = imgs.length + videos.length;
+        if (total === 0) { cb(); return; }
+        var pending = total;
         var done = function () { if (--pending <= 0) cb(); };
-        Array.prototype.forEach.call(imgs, function (img) {
-          if (img.complete && img.naturalWidth > 0) {
-            done();
-          } else {
+
+        imgs.forEach(function (img) {
+          if (img.complete && img.naturalWidth > 0) done();
+          else {
             img.addEventListener('load',  done, { once: true });
             img.addEventListener('error', done, { once: true });
           }
+        });
+
+        videos.forEach(function (v) {
+          /* Preload poster via a temp Image so we get natural dimensions,
+             then lock the video's aspect-ratio so layout has proper height. */
+          var probe = new Image();
+          probe.onload = function () {
+            if (probe.naturalWidth > 0) {
+              v.style.aspectRatio = (probe.naturalWidth / probe.naturalHeight).toFixed(4);
+            }
+            done();
+          };
+          probe.onerror = done;
+          probe.src = v.poster;
         });
       }
 
