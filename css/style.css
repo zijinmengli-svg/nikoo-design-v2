@@ -125,65 +125,6 @@ body.is-panning .p2-strip { bottom: -60px !important; transition: none !importan
   user-select: none;
 }
 
-/* ============ Edit toggle button ============ */
-.edit-toggle {
-  position: fixed;
-  top: 16px; right: 20px;
-  z-index: 300;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(0,0,0,0.15);
-  border-radius: 6px;
-  padding: 6px 14px;
-  font-size: 12px;
-  cursor: pointer;
-  font-family: inherit;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background 0.2s;
-}
-.edit-toggle:hover { background: #fff; }
-.edit-toggle.is-active { background: #111; color: #f59e0b; border-color: #111; }
-
-/* ⚠ DEV-ONLY · language toggle (top-right, left of edit-toggle).
-   Marked with "DEV" badge so it's visually clear it should be
-   removed (and its <button> markup + <script>) before production. */
-.lang-toggle {
-  position: fixed;
-  top: 16px; right: 105px;          /* edit-toggle (right:20) is ~75px wide + 10 gap */
-  z-index: 301;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(0,0,0,0.15);
-  border-radius: 6px;
-  padding: 5px 12px 5px 8px;
-  font-size: 12px;
-  cursor: pointer;
-  font-family: inherit;
-  color: #111;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background 0.2s;
-}
-.lang-toggle:hover { background: #fff; }
-.lang-toggle-dev {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 1px 4px;
-  border-radius: 3px;
-  line-height: 1;
-}
-.lang-toggle-label {
-  font-weight: 500;
-  min-width: 14px;
-  text-align: center;
-}
-
 /* ============ Footer credit — bottom-center, 24px from edge ============ */
 .site-footer {
   position: fixed;

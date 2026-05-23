@@ -1,58 +1,348 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>项目详情</title>
-  <link rel="stylesheet" href="css/detail.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品详情 — Nikoo Design</title>
+    <link rel="stylesheet" href="css/project.css">
+    <meta name="theme-color" content="#080808">
 </head>
 <body>
-  <main class="detail-shell">
-    <div class="detail-wrap" id="app"></div>
-  </main>
-  <script src="js/site-data.js"></script>
-  <script>
-    (function () {
-      var data = window.NIKOO_SITE_DATA;
-      var app = document.getElementById('app');
-      var params = new URLSearchParams(window.location.search);
-      var key = params.get('p');
-      var project = data && data.projects ? data.projects[key] : null;
 
-      if (!project) {
-        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">首页</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">未找到</div><h1 class="detail-title">项目不存在</h1><p class="detail-summary">当前链接对应的项目不存在。</p></section>';
-        return;
-      }
+    <header class="project-header">
+        <a href="index.html" class="project-back" id="projectBack">
+            <span class="project-back-arrow">←</span> 返回
+        </a>
+        <div class="project-header-info">
+            <span class="project-header-name"  id="projectName"  data-field="name"></span>
+            <span class="project-header-year"  id="projectYear"  data-field="year"></span>
+        </div>
+    </header>
 
-      document.title = project.title + ' · 项目详情';
+    <main class="project-main" id="projectMain">
+        <div class="project-intro" id="projectIntro">
+            <p class="project-description" id="projectDescription" data-field="description"></p>
+        </div>
+        <div class="project-images" id="projectImages"></div>
+    </main>
 
-      var assetsHtml = project.assets.map(function (asset) {
-        if (/\.mp4$/i.test(asset)) {
-          return '<section class="detail-frame detail-asset"><video src="' + asset + '" controls playsinline preload="metadata"></video></section>';
-        }
-        return '<section class="detail-frame detail-asset"><img src="' + asset + '" alt="' + project.title + '"></section>';
-      }).join('');
+    <script>
+        /* Back button — prefer browser history. */
+        document.getElementById('projectBack').addEventListener('click', function (e) {
+            if (window.history.length > 1 && document.referrer &&
+                document.referrer !== window.location.href) {
+                e.preventDefault();
+                window.history.back();
+            }
+        });
+    </script>
 
-      app.innerHTML =
-        '<div class="detail-topbar">' +
-          '<div class="detail-nav">' +
-            '<a class="detail-link" href="javascript:history.back()">返回</a>' +
-            '<a class="detail-link" href="index.html">首页</a>' +
-          '</div>' +
-        '</div>' +
-        '<section class="detail-frame detail-hero">' +
-          '<div><img class="detail-cover" src="' + project.cover + '" alt="' + project.title + '"></div>' +
-          '<div class="detail-copy">' +
-            '<div>' +
-              '<div class="detail-kicker">' + project.category + '</div>' +
-              '<h1 class="detail-title">' + project.title + '</h1>' +
-              '<p class="detail-summary">' + project.summary + '</p>' +
-            '</div>' +
-            '<div class="detail-meta">项目内容 · 共 ' + project.assets.length + ' 个媒体素材</div>' +
-          '</div>' +
-        '</section>' +
-        '<section class="detail-grid">' + assetsHtml + '</section>';
-    })();
-  </script>
+    <!-- ============================================================
+         BAKED_PROJECTS — paste exported config here for permanent
+         changes that ship with the deployed site & work cross-browser.
+         Format: { 'projKey': { name, year, description, images: [{src,kind}] } }
+         The "📦 永久保存" button regenerates the snippet to paste here.
+         localStorage still overrides this when present.
+         ============================================================ -->
+    <script>
+        /* @baked-start */
+        window.__bakedProjects = {};
+        /* @baked-end */
+    </script>
+
+    <script>
+        var PROJECTS = {
+            /* ──────── 卡片 2 · AI 设计 ──────── */
+            miaosheng: {
+                name: '秒省助手',
+                year: '2025–2026',
+                images: [
+                    'images/秒省/miaosheng-01.webp','images/秒省/miaosheng-02.webp',
+                    'images/秒省/miaosheng-03.webp','images/秒省/miaosheng-04.webp',
+                    'images/秒省/miaosheng-05.webp','images/秒省/miaosheng-06.webp',
+                    'images/秒省/miaosheng-07.webp','images/秒省/miaosheng-08.webp',
+                    'images/秒省/miaosheng-09.webp','images/秒省/miaosheng-10.webp',
+                    'images/秒省/miaosheng-11.webp','images/秒省/miaosheng-12.webp',
+                    'images/秒省/miaosheng-13.webp','images/秒省/miaosheng-14.webp'
+                ]
+            },
+
+            /* ──────── 卡片 3 · C 端体验设计 ──────── */
+            pet: {
+                name: '宠胖胖',
+                year: '2022–2024',
+                images: [
+                    'images/宠胖胖/A1-01.webp','images/宠胖胖/A1-02.webp','images/宠胖胖/A1-03.webp',
+                    'images/宠胖胖/A1-04.webp','images/宠胖胖/A1-05.webp','images/宠胖胖/A1-06.webp',
+                    'images/宠胖胖/A1-07.webp','images/宠胖胖/A1-08.webp','images/宠胖胖/A1-088.webp',
+                    'images/宠胖胖/A1-09.webp','images/宠胖胖/A1-10.webp','images/宠胖胖/A1-11.webp',
+                    'images/宠胖胖/A1-12.webp','images/宠胖胖/A1-13.webp','images/宠胖胖/A1-14.webp',
+                    'images/宠胖胖/A1-15.webp','images/宠胖胖/A1-16.webp','images/宠胖胖/A1-17.webp',
+                    'images/宠胖胖/A1-18.webp','images/宠胖胖/A1-19.webp'
+                ]
+            },
+            flashparty: {
+                name: '闪聚',
+                year: '2020–2021',
+                images: [
+                    'images/闪聚/A2-01.webp','images/闪聚/A2-02.webp','images/闪聚/A2-03.webp',
+                    'images/闪聚/A2-04.webp','images/闪聚/A2-05.webp','images/闪聚/A2-06.webp',
+                    'images/闪聚/A2-07.webp','images/闪聚/A2-08.webp','images/闪聚/A2-09.webp',
+                    'images/闪聚/A2-10.webp','images/闪聚/A2-11.webp','images/闪聚/A2-12.webp',
+                    'images/闪聚/A2-13.webp','images/闪聚/A2-14.webp','images/闪聚/A2-15.webp',
+                    'images/闪聚/A2-16.webp','images/闪聚/A2-17.webp','images/闪聚/A2-18.webp'
+                ]
+            },
+            blockpixel: {
+                name: 'Block Pixel Puzzle',
+                year: '2020',
+                images: [
+                    'images/Block Pixel Puzzle/06-01.webp','images/Block Pixel Puzzle/06-02.webp',
+                    'images/Block Pixel Puzzle/06-03.webp','images/Block Pixel Puzzle/06-04.webp',
+                    'images/Block Pixel Puzzle/06-05.webp','images/Block Pixel Puzzle/06-06.webp'
+                ]
+            },
+
+            /* ──────── 卡片 4 · B 端体验设计 ──────── */
+            crm: {
+                name: 'OTO 保险业务销售 CRM 系统设计',
+                year: '2022',
+                images: [
+                    'images/OTO 保险业务 销售CRM系统设计/07-01.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-02.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-03.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-04.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-05.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-06.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-07.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-08.webp',
+                    'images/OTO 保险业务 销售CRM系统设计/07-09.webp'
+                ]
+            },
+            capybara: {
+                name: '水豚大夫 — 宠胖胖 SaaS',
+                year: '2022–2023',
+                images: [
+                    'images/水豚大夫-宠胖胖Saas/08-01.webp',
+                    'images/水豚大夫-宠胖胖Saas/08-02.webp',
+                    'images/水豚大夫-宠胖胖Saas/08-03.webp'
+                ]
+            },
+            kejiji: {
+                name: '客集集直播',
+                year: '2019',
+                images: [
+                    'images/客集集直播/05-01.webp','images/客集集直播/05-02.webp',
+                    'images/客集集直播/05-03.webp','images/客集集直播/05-04.webp',
+                    'images/客集集直播/05-05.webp','images/客集集直播/05-06.webp'
+                ]
+            },
+            otherui: {
+                name: '其他 UI 设计',
+                year: '2018–2020',
+                images: [
+                    'images/其他一些UI设计/08-04.webp',
+                    'images/其他一些UI设计/A6-1机车设计.webp',
+                    'images/其他一些UI设计/车载旅行App1.webp',
+                    'images/其他一些UI设计/车载旅行App2.webp',
+                    'images/其他一些UI设计/车载旅行App3.webp'
+                ]
+            },
+
+            /* ──────── 卡片 5 · 视觉设计（4 个项目）──────── */
+            'visual-01': {
+                name: '视觉作品 01',
+                year: '2023',
+                images: ['images/视觉设计/09-01.webp']
+            },
+            'visual-02': {
+                name: '视觉作品 02',
+                year: '2022',
+                images: [
+                    'images/视觉设计/09-02.webp',
+                    'images/视觉设计/09-03.webp',
+                    'images/视觉设计/09-04.webp'
+                ]
+            },
+            'visual-03': {
+                name: '视觉作品 03',
+                year: '2020',
+                images: [
+                    'images/视觉设计/A6-6.webp',
+                    'images/视觉设计/B2-1.webp',
+                    'images/视觉设计/D1-4.webp'
+                ]
+            },
+            'visual-04': {
+                name: '视觉作品 04',
+                year: '2018',
+                images: ['images/视觉设计/D1-7.webp']
+            },
+
+            /* ──────── 卡片 6 · 动效设计（占位）──────── */
+            'motion-01': { name: 'UI 动效集',     year: '2024', images: ['images/01-02.png'], placeholder: true },
+            'motion-02': { name: 'Logo 动画',     year: '2023', images: ['images/01-01.png'], placeholder: true },
+            'motion-03': { name: '交互原型',      year: '2023', images: ['images/01-02.png'], placeholder: true },
+            'motion-04': { name: '微交互探索',    year: '2022', images: ['images/01-01.png'], placeholder: true }
+        };
+
+        (function () {
+            'use strict';
+
+            var STORAGE_KEY = 'nikoo-portfolio-v2';
+            var params = new URLSearchParams(window.location.search);
+            var key    = params.get('p') || '';
+
+            /* ============ Load global state ============ */
+            var state;
+            try {
+                var raw = localStorage.getItem(STORAGE_KEY);
+                state = raw ? JSON.parse(raw) : {};
+            } catch (e) { state = {}; }
+            if (!state.version) state.version = 2;
+
+            var BAKED_PROJECTS = window.__bakedProjects || {};
+
+            /* ============ Element refs ============ */
+            var nameEl   = document.getElementById('projectName');
+            var yearEl   = document.getElementById('projectYear');
+            var descEl   = document.getElementById('projectDescription');
+            var imagesEl = document.getElementById('projectImages');
+            var mainEl   = document.getElementById('projectMain');
+
+            /* Fallback for projects created via category page (state-only) */
+            if (!PROJECTS[key]) {
+                var synth = null;
+                if (state.categories) {
+                    Object.keys(state.categories).some(function (ck) {
+                        var e = state.categories[ck] && state.categories[ck][key];
+                        if (e && e._new) {
+                            synth = {
+                                name:  e.name || '未命名项目',
+                                year:  e.year || '',
+                                images: e.cover ? [{ src: e.cover, kind: e.coverKind || 'image' }] : []
+                            };
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                if (synth) {
+                    PROJECTS[key] = synth;
+                } else {
+                    mainEl.innerHTML = [
+                        '<div class="project-not-found">',
+                        '  <h2>项目未找到</h2>',
+                        '  <a href="../nikoo-design-v2/">← 返回首页</a>',
+                        '</div>'
+                    ].join('');
+                    return;
+                }
+            }
+
+            /* ============ Helpers ============ */
+            function normalizeImages(images) {
+                return (images || []).map(function (item) {
+                    if (typeof item === 'string') return { src: item, kind: 'image' };
+                    return Object.assign({}, item);
+                });
+            }
+            function isVideoSrc(src) {
+                if (!src) return false;
+                if (src.indexOf('data:video/') === 0) return true;
+                return /\.(mp4|mov|m4v|webm)(\?|$)/i.test(src);
+            }
+            function pick(ls, baked, base) {
+                if (ls  != null) return ls;
+                if (baked != null) return baked;
+                return base;
+            }
+
+            /* ============ Effective project ============
+               Layer order: state.projects ← BAKED_PROJECTS ← PROJECTS
+               Plus: category cover overrides only the FIRST image
+                     (if state.projects didn't fully override images). */
+            function getEffective() {
+                var base   = PROJECTS[key];
+                var bakedP = BAKED_PROJECTS[key] || {};
+                var lsP    = (state.projects && state.projects[key]) || {};
+
+                /* Category-level cover for this project (only set first image) */
+                var catCover = null, catKind = null;
+                if (state.categories) {
+                    Object.keys(state.categories).forEach(function (cat) {
+                        var entry = state.categories[cat] && state.categories[cat][key];
+                        if (entry && entry.cover) {
+                            catCover = entry.cover;
+                            catKind  = entry.coverKind || 'image';
+                        }
+                    });
+                }
+
+                var images = normalizeImages(
+                    lsP.images   != null ? lsP.images   :
+                    bakedP.images != null ? bakedP.images :
+                    base.images
+                );
+                if (catCover && lsP.images == null && bakedP.images == null && images.length > 0) {
+                    images = images.slice();
+                    images[0] = { src: catCover, kind: catKind };
+                }
+                return {
+                    name:        pick(lsP.name,        bakedP.name,        base.name),
+                    year:        pick(lsP.year,        bakedP.year,        base.year),
+                    description: pick(lsP.description, bakedP.description, base.description || ''),
+                    images:      images
+                };
+            }
+
+            var project = getEffective();
+
+            /* ============ Renderers ============ */
+            function renderText() {
+                document.title = project.name + ' — Nikoo Design';
+                nameEl.textContent = project.name;
+                yearEl.textContent = project.year;
+                descEl.textContent = project.description || '';
+                descEl.classList.toggle('has-content', !!project.description);
+            }
+            function renderImages() {
+                imagesEl.innerHTML = '';
+                project.images.forEach(function (img, idx) {
+                    var wrap = document.createElement('div');
+                    wrap.className = 'project-image';
+                    wrap.dataset.idx = idx;
+                    wrap.draggable = true;
+                    var el;
+                    if (img.kind === 'video') {
+                        el = document.createElement('video');
+                        el.src = img.src;
+                        el.autoplay = true; el.loop = true; el.muted = true;
+                        el.playsInline = true;
+                        el.setAttribute('playsinline', '');
+                        el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+                    } else {
+                        el = document.createElement('img');
+                        el.src = img.src;
+                        el.alt = project.name;
+                        el.loading = 'lazy';
+                        el.addEventListener('dragstart', function (e) { e.preventDefault(); });
+                    }
+                    wrap.appendChild(el);
+                    imagesEl.appendChild(wrap);
+                });
+            }
+            renderText();
+            renderImages();
+
+            function refresh() {
+                project = getEffective();
+                renderText();
+                renderImages();
+            }
+
+        })();
+    </script>
+
 </body>
 </html>

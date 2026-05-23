@@ -2,60 +2,467 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>作品分类</title>
-  <link rel="stylesheet" href="css/detail.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="docTitle">作品分类 — Nikoo Design</title>
+  <link rel="stylesheet" href="css/category.css">
 </head>
 <body>
-  <main class="detail-shell">
-    <div class="detail-wrap" id="app"></div>
+
+  <header class="cat-header">
+    <a href="index.html" class="cat-back" id="catBack">← 返回</a>
+    <div class="cat-name" id="catName"></div>
+  </header>
+
+  <script>
+    document.getElementById('catBack').addEventListener('click', function (e) {
+      if (window.history.length > 1 && document.referrer &&
+          document.referrer !== window.location.href) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  </script>
+
+  <main class="cat-main">
+    <div class="cat-intro">
+      <h2 id="catHeading"     data-meta-field="heading"></h2>
+      <p  id="catDescription" data-meta-field="description"></p>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
   </main>
-  <script src="js/site-data.js"></script>
+
+  <!-- ============================================================
+       BAKED_OVERRIDES — paste exported config here for permanent
+       changes that ship with the deployed site. localStorage still
+       overrides this when present.
+       ============================================================ -->
+  <script>
+    /* @baked-start */
+    window.__bakedOverrides    = {
+  "visual": {
+    "visual-01": {
+      "name": "AI项目-猫咪性格测试"
+    },
+    "visual-02": {
+      "name": "海报作品"
+    },
+    "visual-03": {
+      "name": "平面设计"
+    },
+    "visual-04": {
+      "name": "其他设计"
+    }
+  }
+};
+    window.__bakedCategoryMeta = {};
+    /* @baked-end */
+  </script>
+
+  <!-- ============================================================
+       Data — category definitions (default content)
+       ============================================================ -->
+  <script>
+    var CATEGORIES = {
+      'consumer-ux': {
+        name: 'C 端体验设计',
+        heading: 'C 端体验设计',
+        description: '面向消费者的产品体验设计 · 覆盖宠物、社交、休闲游戏等多个领域',
+        projects: [
+          { key: 'pet',        name: '宠胖胖',            year: '2022–2024', cover: 'images/宠胖胖/A1-01.webp' },
+          { key: 'flashparty', name: '闪聚',              year: '2020–2021', cover: 'images/闪聚/A2-01.webp' },
+          { key: 'blockpixel', name: 'Block Pixel Puzzle', year: '2020',     cover: 'images/Block Pixel Puzzle/06-01.webp' }
+        ]
+      },
+      'enterprise-ux': {
+        name: 'B 端体验设计',
+        heading: 'B 端体验设计',
+        description: '面向企业与专业用户的复杂系统设计 · 销售管理、医疗专业工具、直播运营、UI 项目集',
+        projects: [
+          { key: 'crm',      name: 'OTO 保险业务销售 CRM',  year: '2022',      cover: 'images/OTO 保险业务 销售CRM系统设计/07-01.webp' },
+          { key: 'capybara', name: '水豚大夫 — 宠胖胖 SaaS', year: '2022–2023', cover: 'images/水豚大夫-宠胖胖Saas/08-01.webp' },
+          { key: 'kejiji',   name: '客集集直播',             year: '2019',      cover: 'images/客集集直播/05-01.webp' },
+          { key: 'otherui',  name: '其他 UI 设计',           year: '2018–2020', cover: 'images/其他一些UI设计/08-04.webp' }
+        ]
+      },
+      'ai': {
+        name: 'AI 设计',
+        heading: 'AI 设计',
+        description: '基于 AI 能力的产品创新设计探索',
+        projects: [
+          { key: 'miaosheng', name: '秒省助手', year: '2025–2026', cover: 'images/秒省/miaosheng-01.webp' }
+        ]
+      },
+      'visual': {
+        name: '视觉设计',
+        heading: '视觉设计',
+        description: '品牌视觉、插画、海报与视觉系统作品',
+        projects: [
+          { key: 'visual-01', name: '视觉作品 01', year: '2023', cover: 'images/视觉设计/09-01.webp' },
+          { key: 'visual-02', name: '视觉作品 02', year: '2022', cover: 'images/视觉设计/09-02.webp' },
+          { key: 'visual-03', name: '视觉作品 03', year: '2020', cover: 'images/视觉设计/A6-6.webp' },
+          { key: 'visual-04', name: '视觉作品 04', year: '2018', cover: 'images/视觉设计/D1-7.webp' }
+        ]
+      },
+      'motion': {
+        name: '动效设计',
+        heading: '动效设计',
+        description: '交互动效、界面微交互与 IP 动画 · 鼠标悬停卡片播放',
+        layout: 'masonry',          /* masonry · hover-swap poster ↔ animation · no detail */
+        projects: [
+          /* ─── 宠胖胖项目动效（12 项）· cover = 静态首帧 webp · animSrc = APNG/GIF ─── */
+          { key: 'motion-cpp-tab', name: '新版 Tab 集合展示', year: '2024',
+            cover:   'images/动效/cpp新版tab集合展示_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp新版tab集合展示_00000_iSpt.png' },
+          { key: 'motion-cpp-refresh', name: '下拉刷新动效', year: '2024',
+            cover:   'images/动效/cpp下拉刷新1_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp下拉刷新1_00000_iSpt.png' },
+          { key: 'motion-cpp-card', name: '商品卡片动效', year: '2024',
+            cover:   'images/动效/cpp商品卡片_00017_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp商品卡片_00017_iSpt.gif' },
+          { key: 'motion-cpp-display', name: '展示效果', year: '2024',
+            cover:   'images/动效/cpp展示效果_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp展示效果_00000_iSpt.png' },
+          { key: 'motion-cpp-guide-tap', name: '新手引导 · 点击引导', year: '2024',
+            cover:   'images/动效/cpp新手引导-点击引导_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp新手引导-点击引导_00000_iSpt.png' },
+          { key: 'motion-cpp-guide-swipe', name: '新手引导 · 滑动引导', year: '2024',
+            cover:   'images/动效/cpp新手引导-滑动引导_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp新手引导-滑动引导_00000_iSpt.png' },
+          { key: 'motion-cpp-tap', name: '点击动画集合', year: '2023',
+            cover:   'images/动效/cpp点击动画集合-poster.webp',
+            animSrc: 'images/动效/cpp点击动画集合.gif' },
+          { key: 'motion-cpp-swipe', name: '左滑动画集合', year: '2023',
+            cover:   'images/动效/cpp左滑动画集合-poster.webp',
+            animSrc: 'images/动效/cpp左滑动画集合.gif' },
+          { key: 'motion-cpp-like', name: '点赞效果', year: '2024',
+            cover:   'images/动效/cpp点赞效果展示稿_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp点赞效果展示稿_00000_iSpt.png' },
+          { key: 'motion-cpp-ip', name: 'IP 胖胖整合（24 帧）', year: '2022',
+            cover:   'images/动效/cppIP胖胖整合（24帧）_iSpt-poster.webp',
+            animSrc: 'images/动效/cppIP胖胖整合（24帧）_iSpt.png' },
+          { key: 'motion-cpp-pets3', name: '养宠 · 三宠物滑动', year: '2024',
+            cover:   'images/动效/cpp养宠-三宠物滑动_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp养宠-三宠物滑动_00000_iSpt.png' },
+          { key: 'motion-cpp-petswitch', name: '多宠 · 单宠切换', year: '2024',
+            cover:   'images/动效/cpp多宠-单宠切换_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/cpp多宠-单宠切换_00000_iSpt.png' },
+          /* ─── 秒省项目动效（4 项）─── */
+          { key: 'motion-ms-spinner', name: '转圈加载动画', year: '2025',
+            cover:   'images/动效/ms转圈动画预览_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/ms转圈动画预览_00000_iSpt.png' },
+          { key: 'motion-ms-loading', name: '加载展示效果', year: '2025',
+            cover:   'images/动效/ms加载展示效果_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/ms加载展示效果_00000_iSpt.png' },
+          { key: 'motion-ms-aimenu', name: 'AI 点餐入口动画', year: '2025',
+            cover:   'images/动效/ms-AI点餐入口展示动画_00000_iSpt-poster.webp',
+            animSrc: 'images/动效/ms-AI点餐入口展示动画_00000_iSpt.png' },
+          { key: 'motion-ms-deevid', name: 'DeeVid 视频', year: '2025',
+            cover:   'images/动效/ms-deevid视频_00094_iSpt-poster.webp',
+            animSrc: 'images/动效/ms-deevid视频_00094_iSpt.png' }
+        ]
+      }
+    };
+  </script>
+
+  <!-- ============================================================
+       Renderer + Editor — single unified IIFE
+       ============================================================ -->
   <script>
     (function () {
-      var data = window.NIKOO_SITE_DATA;
-      var app = document.getElementById('app');
-      var params = new URLSearchParams(window.location.search);
-      var key = params.get('cat');
-      var category = data && data.categories ? data.categories[key] : null;
+      'use strict';
 
-      if (!category) {
-        app.innerHTML = '<div class="detail-topbar"><div class="detail-nav"><a class="detail-link" href="index.html">首页</a></div></div><section class="detail-frame detail-empty"><div class="detail-kicker">未找到</div><h1 class="detail-title">分类不存在</h1><p class="detail-summary">当前链接对应的分类不存在。</p></section>';
+      var STORAGE_KEY = 'nikoo-portfolio-v2';
+
+      /* ============ Setup ============ */
+      var params = new URLSearchParams(window.location.search);
+      var catKey = params.get('cat') || '';
+      var cat    = CATEGORIES[catKey];
+      var grid   = document.getElementById('catGrid');
+
+      if (!cat) {
+        grid.innerHTML =
+          '<div class="cat-empty">' +
+          '  <div class="cat-empty-icon">🔍</div>' +
+          '  <p>分类未找到 — <a href="../nikoo-design-v2/" style="text-decoration:underline">返回首页</a></p>' +
+          '</div>';
         return;
       }
 
-      document.title = category.title + ' · 作品分类';
+      /* ============ Load state ============ */
+      var state;
+      try {
+        var raw0 = localStorage.getItem(STORAGE_KEY);
+        state = raw0 ? JSON.parse(raw0) : {};
+      } catch (e) { state = {}; }
+      if (!state.version) state.version = 2;
 
-      var cardsHtml = category.projects.map(function (projectKey) {
-        var project = data.projects[projectKey];
-        if (!project) return '';
-        return '' +
-          '<a class="detail-frame category-item" href="project.html?p=' + projectKey + '">' +
-            '<img class="category-item-cover" src="' + project.cover + '" alt="' + project.title + '">' +
-            '<div class="category-item-copy">' +
-              '<div>' +
-                '<div class="detail-kicker">' + project.category + '</div>' +
-                '<h2 class="category-item-title">' + project.title + '</h2>' +
-                '<p class="category-item-summary">' + project.summary + '</p>' +
-              '</div>' +
-              '<div class="category-item-link">查看详情</div>' +
-            '</div>' +
-          '</a>';
-      }).join('');
+      var BAKED_OV   = window.__bakedOverrides    || {};
+      var BAKED_META = window.__bakedCategoryMeta || {};
 
-      app.innerHTML =
-        '<div class="detail-topbar">' +
-          '<div class="detail-nav">' +
-            '<a class="detail-link" href="index.html">首页</a>' +
-          '</div>' +
-        '</div>' +
-        '<header class="detail-frame category-header">' +
-          '<div class="detail-kicker">分类</div>' +
-          '<h1 class="category-title">' + category.title + '</h1>' +
-          '<p class="category-subtitle">' + category.subtitle + '</p>' +
-        '</header>' +
-        '<section class="category-grid">' + cardsHtml + '</section>';
+      /* ============ Helpers ============ */
+      function pickField(ls, baked, base) {
+        if (ls    != null) return ls;
+        if (baked != null) return baked;
+        return base;
+      }
+      function isVideoSrc(src) {
+        if (!src) return false;
+        if (src.indexOf('data:video/') === 0) return true;
+        return /\.(mp4|mov|m4v|webm)(\?|$)/i.test(src);
+      }
+      function buildMedia(src, kind, alt, hoverPlay) {
+        if (kind === 'video') {
+          var v = document.createElement('video');
+          v.src = src;
+          v.muted = true; v.loop = true;
+          v.autoplay = !hoverPlay;          /* hover-play: don't autoplay; play() on enter */
+          v.playsInline = true;
+          v.setAttribute('playsinline', '');
+          v.preload = hoverPlay ? 'none' : 'auto';   /* 'none' = zero bytes until play() */
+          v.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+          return v;
+        }
+        var img = document.createElement('img');
+        img.src = src;
+        img.alt = alt || '';
+        img.loading = 'lazy';
+        img.addEventListener('dragstart', function (e) { e.preventDefault(); });
+        return img;
+      }
+
+      /* ============ Effective per-project overrides (baked ← LS) ============ */
+      function computeSaved() {
+        var baked = BAKED_OV[catKey] || {};
+        var fromLS = (state.categories && state.categories[catKey]) || {};
+        var out = {};
+        Object.keys(baked).forEach(function (k) { out[k] = Object.assign({}, baked[k]); });
+        Object.keys(fromLS).forEach(function (k) {
+          if (fromLS[k] && Object.keys(fromLS[k]).length === 0) {
+            delete out[k];
+          } else {
+            out[k] = Object.assign({}, out[k] || {}, fromLS[k]);
+          }
+        });
+        return out;
+      }
+
+      /* ============ Short-circuit 1-project category ============ */
+      var preliminary = computeSaved();
+      var hasNew = Object.keys(preliminary).some(function (k) { return preliminary[k]._new; });
+      if (cat.projects.length === 1 && !hasNew &&
+          !(preliminary[cat.projects[0].key] && preliminary[cat.projects[0].key].deleted)) {
+        window.location.replace('project.html?p=' + cat.projects[0].key);
+        return;
+      }
+
+      /* Persistence helpers are no-ops in production (no editor wired up). */
+
+      /* ============ Populate header ============ */
+      document.title = cat.name + ' — Nikoo Design';
+      document.getElementById('docTitle').textContent = document.title;
+      document.getElementById('catName').textContent  = cat.name;
+
+      function renderMeta() {
+        var lsMeta    = (state.categoriesMeta && state.categoriesMeta[catKey]) || {};
+        var bakedMeta = BAKED_META[catKey] || {};
+        document.getElementById('catHeading').textContent =
+          pickField(lsMeta.heading,     bakedMeta.heading,     cat.heading);
+        document.getElementById('catDescription').textContent =
+          pickField(lsMeta.description, bakedMeta.description, cat.description);
+      }
+      renderMeta();
+
+      /* ============ Grid renderer ============ */
+      grid.dataset.layout = cat.layout === 'masonry' ? 'masonry' : 'many';
+      var bakedKeysMap = {};
+      cat.projects.forEach(function (p) { bakedKeysMap[p.key] = true; });
+
+      function renderGrid() {
+        grid.innerHTML = '';
+        var saved = computeSaved();
+
+        /* 1. Baked entries (minus soft-deleted) */
+        var ordered = [];
+        cat.projects.forEach(function (p) {
+          var s = saved[p.key];
+          if (s && s.deleted) return;
+          ordered.push({ key: p.key, base: p });
+        });
+        /* 2. NEW entries (defined in saved with _new, not in baked CATEGORIES) */
+        Object.keys(saved).forEach(function (pk) {
+          if (bakedKeysMap[pk]) return;
+          if (!saved[pk]._new) return;
+          if (saved[pk].deleted) return;
+          ordered.push({
+            key: pk,
+            base: {
+              key: pk,
+              name: saved[pk].name || '未命名项目',
+              year: saved[pk].year || '',
+              cover: 'images/01-01.png'
+            }
+          });
+        });
+
+        ordered.forEach(function (entry) {
+          grid.appendChild(buildCard(entry.key, entry.base, saved));
+        });
+
+        /* Empty state if no visible projects */
+        if (ordered.length === 0) {
+          var empty = document.createElement('div');
+          empty.className = 'cat-empty';
+          empty.innerHTML = '<div class="cat-empty-icon">🚧</div><p>作品准备中 · 敬请期待</p>';
+          grid.appendChild(empty);
+        }
+
+        /* True Pinterest masonry — JS-driven shortest-column-first packing. */
+        if (cat.layout === 'masonry') {
+          whenImagesLoaded(grid, layoutMasonry);
+        }
+      }
+
+      /* ============ True masonry layout (shortest-col-first packing) ============
+         Items absolutely positioned; each new item goes to the column with the
+         currently-lowest bottom edge. Eliminates row-baseline alignment and
+         removes whitespace caused by column-fill: balance. */
+      function layoutMasonry() {
+        if (grid.dataset.layout !== 'masonry') return;
+        var gap = 24;
+        /* Column count — match the CSS responsive breakpoints */
+        var vw = window.innerWidth;
+        var cols = vw <= 600 ? 1 : (vw <= 1024 ? 2 : 3);
+        var containerW = grid.clientWidth;
+        var colW = (containerW - gap * (cols - 1)) / cols;
+        var colH = [];
+        for (var i = 0; i < cols; i++) colH.push(0);
+
+        var items = Array.prototype.slice.call(grid.querySelectorAll('.cat-item'));
+
+        /* Width first so the browser can compute final heights. */
+        items.forEach(function (el) {
+          el.style.width = colW + 'px';
+        });
+        /* Force reflow so offsetHeight reflects the new width. */
+        void grid.offsetHeight;
+
+        items.forEach(function (el) {
+          /* Pick shortest column. */
+          var minI = 0;
+          for (var i = 1; i < cols; i++) if (colH[i] < colH[minI]) minI = i;
+          var x = minI * (colW + gap);
+          var y = colH[minI];
+          el.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+          colH[minI] += el.offsetHeight + gap;
+        });
+
+        /* Container height = tallest column (minus the final gap). */
+        var maxH = 0;
+        for (var j = 0; j < cols; j++) if (colH[j] > maxH) maxH = colH[j];
+        grid.style.height = (maxH > gap ? maxH - gap : 0) + 'px';
+      }
+
+      /* Wait until every <img> inside `root` has loaded (or errored) before cb. */
+      function whenImagesLoaded(root, cb) {
+        var imgs = root.querySelectorAll('img');
+        var pending = imgs.length;
+        if (pending === 0) { cb(); return; }
+        var done = function () { if (--pending <= 0) cb(); };
+        Array.prototype.forEach.call(imgs, function (img) {
+          if (img.complete && img.naturalWidth > 0) {
+            done();
+          } else {
+            img.addEventListener('load',  done, { once: true });
+            img.addEventListener('error', done, { once: true });
+          }
+        });
+      }
+
+      /* Debounced resize handler — re-pack on viewport change. */
+      var resizeTimer = null;
+      window.addEventListener('resize', function () {
+        if (cat.layout !== 'masonry') return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layoutMasonry, 120);
+      });
+
+      function buildCard(pk, p, saved) {
+        var isMasonry = cat.layout === 'masonry';      /* hover-play, no click-through */
+        var item;
+        if (isMasonry) {
+          item = document.createElement('div');         /* not a link in masonry mode */
+        } else {
+          item = document.createElement('a');
+          item.href = 'project.html?p=' + pk;
+        }
+        item.className = 'cat-item';
+        item.dataset.projectKey = pk;
+
+        var savedItem = saved[pk] || {};
+
+        var cover = document.createElement('div');
+        cover.className = 'cat-cover';
+        var mediaSrc  = savedItem.cover || p.cover;
+        var mediaKind = savedItem.coverKind || (isVideoSrc(mediaSrc) ? 'video' : 'image');
+        var mediaEl = buildMedia(mediaSrc, mediaKind, p.name, /* hoverPlay */ isMasonry);
+        cover.appendChild(mediaEl);
+        item.appendChild(cover);                /* cover first (top of card) */
+
+        /* Masonry hover-play behaviors */
+        if (isMasonry) {
+          /* A) APNG / GIF — hover-swap pattern.
+                Default img.src = poster (static first-frame webp, ~5–100 KB).
+                mouseenter → src = animSrc (APNG/GIF, autoplays).
+                mouseleave → src = poster (animation discarded).
+                Browser caches animSrc after first hover so subsequent hovers
+                load instantly. */
+          var animSrc = savedItem.animSrc || p.animSrc;
+          if (animSrc && mediaEl.tagName === 'IMG') {
+            cover.classList.add('has-anim');
+            item.addEventListener('mouseenter', function () {
+              mediaEl.src = animSrc;
+            });
+            item.addEventListener('mouseleave', function () {
+              mediaEl.src = mediaSrc;          /* restore poster */
+            });
+          }
+          /* B) Video (user uploaded .mp4 via edit mode) — click to play/pause */
+          else if (mediaKind === 'video') {
+            cover.classList.add('has-video');
+            item.addEventListener('click', function (e) {
+              e.preventDefault();
+              if (mediaEl.paused) mediaEl.play().catch(function () {});
+              else mediaEl.pause();
+            });
+            mediaEl.addEventListener('play',  function () { cover.classList.add('is-playing'); });
+            mediaEl.addEventListener('pause', function () { cover.classList.remove('is-playing'); });
+            mediaEl.addEventListener('ended', function () { cover.classList.remove('is-playing'); });
+          }
+        }
+
+        var meta = document.createElement('div');
+        meta.className = 'cat-meta';
+        var titleEl = document.createElement('div');
+        titleEl.className = 'cat-title';
+        titleEl.textContent = savedItem.name || p.name;
+        titleEl.dataset.projectKey = pk;
+        titleEl.dataset.field = 'name';
+        var yearEl = document.createElement('div');
+        yearEl.className = 'cat-year';
+        yearEl.textContent = savedItem.year || p.year;
+        yearEl.dataset.projectKey = pk;
+        yearEl.dataset.field = 'year';
+        meta.appendChild(titleEl);
+        meta.appendChild(yearEl);
+        item.appendChild(meta);
+
+        return item;
+      }
+
+      renderGrid();
+
     })();
   </script>
+
 </body>
 </html>

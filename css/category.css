@@ -1,0 +1,531 @@
+/* ============================================================
+   category.css — Project category page (rauno.me/craft style)
+   Adaptive: 2 projects → fit-width 2-col · 3+ → masonry 3-col
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg:         #ede9e3;
+  --fg:         #1a1a1a;
+  --fg-muted:   #6b6b6b;
+  --fg-faint:   rgba(0,0,0,0.45);
+  --card-bg:    #ffffff;
+  --border:     rgba(0,0,0,0.08);
+  --shadow:     0 2px 24px rgba(0,0,0,0.06);
+  --shadow-hov: 0 6px 40px rgba(0,0,0,0.12);
+  --font:       -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { text-decoration: none; color: inherit; }
+img, video { display: block; max-width: 100%; }
+
+/* ============ Header ============ */
+.cat-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  gap: 16px;                                  /* prevent overlap when squeezed */
+  background: rgba(237, 233, 227, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+@media (max-width: 600px) {
+  .cat-header { padding: 14px 18px; gap: 10px; }
+  .cat-name   { font-size: 13px; min-width: 0; overflow: hidden;
+                text-overflow: ellipsis; white-space: nowrap; }
+  /* .cat-main mobile padding handled in main's own block below */
+  .cat-intro  { margin-bottom: 36px; }
+  .cat-intro h2 { font-size: 28px; }
+}
+
+.cat-back {
+  font-size: 13px;
+  color: var(--fg-muted);
+  transition: color 0.2s;
+  letter-spacing: -0.005em;
+}
+.cat-back:hover { color: var(--fg); }
+
+.cat-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+}
+
+.cat-edit-toggle {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--fg);
+  transition: background 0.2s;
+}
+.cat-edit-toggle:hover { background: #fff; }
+.cat-edit-toggle.is-active {
+  background: #111;
+  color: #f59e0b;
+  border-color: #111;
+}
+
+/* ============ Main ============
+   Page gutter unified at 24px from 800px viewport upward.
+   Mobile (≤ 600px) shrinks to 16px to maximize card width.
+   All values are 8-grid compliant.
+   =============================================================== */
+.cat-main {
+  width: 100%;
+  padding: 104px 24px 80px;
+  margin: 0 auto;
+}
+@media (max-width: 1024px) {
+  .cat-main { padding: 96px 24px 56px; }
+}
+@media (max-width: 600px) {
+  .cat-main { padding: 88px 16px 56px; }
+}
+
+.cat-intro {
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+.cat-intro h2 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.cat-intro p {
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.55;
+}
+
+/* ============ Layout: MASONRY (motion / 动效) ==========================
+   True Pinterest packing — shortest-column-first placement via JS.
+   Items are absolutely positioned; container.style.height set by JS.
+   ====================================================================== */
+.cat-grid[data-layout="masonry"] {
+  width: 100%;
+  position: relative;        /* anchor for absolute items */
+  /* JS sets explicit height after layout */
+}
+/* Card — absolutely positioned by JS, 16px rounded corners clip image.
+   Meta overlay at bottom hidden by default, fades in on hover. */
+.cat-grid[data-layout="masonry"] .cat-item {
+  position: absolute;                      /* JS sets left/top via transform */
+  top: 0; left: 0;
+  display: block;
+  margin: 0;                               /* gap handled by JS positioning */
+  cursor: default;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  will-change: transform;
+}
+/* Add tile (+ 新建项目) also positioned absolutely in masonry layout */
+.cat-grid[data-layout="masonry"] .cat-add-tile {
+  position: absolute;
+  top: 0; left: 0;
+  margin: 0;
+}
+/* Cover fills entire card */
+.cat-grid[data-layout="masonry"] .cat-cover {
+  aspect-ratio: auto;
+  cursor: default;
+  background: #ffffff;
+  border-radius: 0;
+}
+.cat-grid[data-layout="masonry"] .cat-cover img,
+.cat-grid[data-layout="masonry"] .cat-cover video {
+  height: auto;
+  display: block;
+  width: 100%;
+}
+/* Meta overlay — hidden by default, fades in on hover with gradient for legibility */
+.cat-grid[data-layout="masonry"] .cat-meta {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 24px 16px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.cat-grid[data-layout="masonry"] .cat-item:hover .cat-meta { opacity: 1; }
+.cat-grid[data-layout="masonry"] .cat-meta .cat-title {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+.cat-grid[data-layout="masonry"] .cat-meta .cat-year {
+  color: rgba(255,255,255,0.85);
+  font-size: 12px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+/* Edit mode: meta always visible so titles/years stay editable */
+body.edit-mode .cat-grid[data-layout="masonry"] .cat-meta {
+  opacity: 1;
+  pointer-events: auto;
+}
+.cat-grid[data-layout="masonry"] .cat-title { flex: 1; min-width: 0; }
+.cat-grid[data-layout="masonry"] .cat-year  { flex-shrink: 0; }
+
+/* hover lift suppressed in masonry (subtle scale on cover only) */
+.cat-grid[data-layout="masonry"] .cat-item:hover .cat-cover {
+  transform: none;
+}
+
+/* Video cards: ▶ overlay shown until playing.
+   .has-video added on covers with video media;
+   .is-playing toggled by play/pause events. */
+.cat-grid[data-layout="masonry"] .cat-cover.has-video {
+  cursor: pointer;
+  background: #1a1a1a;            /* dark backdrop before metadata loads */
+}
+.cat-grid[data-layout="masonry"] .cat-cover.has-video::after {
+  content: '▶';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
+  text-align: center;
+  font-size: 20px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  transition: background 0.2s ease, opacity 0.25s ease, transform 0.2s ease;
+}
+.cat-grid[data-layout="masonry"] .cat-item:hover .cat-cover.has-video::after {
+  background: rgba(0, 0, 0, 0.78);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.cat-grid[data-layout="masonry"] .cat-cover.has-video.is-playing::after {
+  opacity: 0;
+}
+
+/* ============ Grid — unified 3-col layout for all categories ============
+   8px baseline grid:
+   · default       3 columns · gap 24px
+   · ≤ 1024px      2 columns · gap 16px (small screen / zoomed browser)
+   · cards scale via 1fr → adapt to container width
+   ======================================================================== */
+.cat-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+
+/* ============ Item card — cover on top, meta at bottom-left ============
+   - Cover image fills upper portion, uniform aspect ratio for grid alignment
+   - Title + year stacked at bottom-left, plain text (no card frame)
+   - Subtle hover scale on cover for affordance
+   ========================================================================== */
+.cat-item {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  position: relative;            /* for absolute .cat-delete */
+}
+
+/* Cover — fills card width, fixed 4:3 ratio for uniform grid look.
+   No border-radius per design spec: sharp corners across all pages. */
+.cat-cover {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #f0ece6;
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cat-cover img,
+.cat-cover video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #f0ece6;
+}
+.cat-item:hover .cat-cover {
+  transform: scale(1.015);
+}
+
+/* Meta — BOTTOM, left-aligned. Title big, year small below. */
+.cat-meta {
+  padding: 14px 4px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.cat-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+  word-break: break-word;
+}
+.cat-year {
+  font-size: 12px;
+  color: var(--fg-faint);
+  letter-spacing: 0;
+}
+
+/* ============ Empty state ============ */
+.cat-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--fg-muted);
+}
+.cat-empty-icon { font-size: 48px; margin-bottom: 16px; }
+
+/* ============ Edit mode ============ */
+.cat-edit-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: #111;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-size: 12px;
+  z-index: 200;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.5;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+.cat-edit-banner.is-visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.cat-edit-tip { text-align: center; }
+.cat-edit-hint { color: rgba(255,255,255,0.55); margin-left: 6px; }
+
+.cat-edit-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cat-edit-actions button {
+  font-family: inherit;
+  font-size: 12px;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.cat-edit-actions button:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.3);
+}
+.cat-edit-actions button:first-child {
+  background: #f59e0b;
+  color: #111;
+  border-color: #f59e0b;
+  font-weight: 500;
+}
+.cat-edit-actions button:first-child:hover {
+  background: #fbbf24;
+  border-color: #fbbf24;
+}
+@media (max-width: 600px) {
+  .cat-edit-banner { font-size: 11px; bottom: 16px; padding: 10px 14px; }
+  .cat-edit-actions button { padding: 6px 10px; font-size: 11px; }
+}
+.cat-edit-banner.is-visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+body.edit-mode .cat-item { cursor: default; }
+body.edit-mode .cat-cover {
+  outline: 2px dashed transparent;
+  outline-offset: -8px;
+  cursor: context-menu;            /* hint: right-click affordance */
+  transition: outline-color 0.2s;
+}
+body.edit-mode .cat-cover:hover {
+  outline-color: rgba(245, 158, 11, 0.6);
+}
+body.edit-mode .cat-cover img,
+body.edit-mode .cat-cover video {
+  pointer-events: none;            /* click/right-click bubbles to .cat-cover */
+}
+body.edit-mode .cat-title {
+  outline: 1px dashed transparent;
+  outline-offset: 2px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  border-radius: 4px;
+  transition: outline-color 0.2s, background 0.2s;
+}
+body.edit-mode .cat-title:hover {
+  outline-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.08);
+}
+body.edit-mode .cat-title[contenteditable="true"] {
+  outline-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+}
+
+/* Year — same edit affordance as title */
+body.edit-mode .cat-year {
+  outline: 1px dashed transparent;
+  outline-offset: 2px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+  cursor: text;
+  transition: outline-color 0.2s, background 0.2s;
+}
+body.edit-mode .cat-year:hover {
+  outline-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.08);
+}
+body.edit-mode .cat-year[contenteditable="true"] {
+  outline-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+}
+
+/* Category-level editable fields (heading + description) */
+body.edit-mode .cat-intro h2,
+body.edit-mode .cat-intro p {
+  outline: 1px dashed transparent;
+  outline-offset: 4px;
+  cursor: text;
+  border-radius: 4px;
+  transition: outline-color 0.2s, background 0.2s;
+}
+body.edit-mode .cat-intro h2:hover,
+body.edit-mode .cat-intro p:hover {
+  outline-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.05);
+}
+body.edit-mode .cat-intro [contenteditable="true"] {
+  outline-color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.10) !important;
+}
+
+/* ============ × Delete button on each card ============ */
+.cat-delete {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 32px; height: 32px;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+  z-index: 10;
+  font-family: inherit;
+  transition: background 0.15s, transform 0.15s;
+}
+.cat-delete:hover {
+  background: #dc2626;
+  transform: scale(1.08);
+}
+body.edit-mode .cat-delete { display: flex; align-items: center; justify-content: center; }
+
+/* ============ + 新建项目 tile ============ */
+.cat-add-tile {
+  display: none;                       /* shown only in edit mode */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  background: rgba(0, 0, 0, 0.04);
+  border: 2px dashed rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  font-family: inherit;
+  color: #6b6b6b;
+  gap: 6px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+body.edit-mode .cat-add-tile { display: flex; }
+.cat-add-tile:hover {
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.6);
+  color: #b45309;
+}
+.cat-add-icon {
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 200;
+}
+.cat-add-label {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+/* ============ Context menu ============ */
+.cat-ctx-menu {
+  position: fixed;
+  z-index: 9999;
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 4px;
+  display: none;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  font-family: inherit;
+}
+.cat-ctx-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #fff;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.cat-ctx-menu button:hover { background: #222; }
+.cat-ctx-menu button.danger { color: #f87171; }

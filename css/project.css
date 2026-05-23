@@ -1,0 +1,368 @@
+/* project.css — 作品详情独立页样式 */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+            Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font);
+    background: #080808;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+.project-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(8, 8, 8, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.project-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.project-back:hover {
+    color: #fff;
+}
+
+.project-back-arrow {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.project-header-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.project-header-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.project-header-year {
+    font-size: 12px;
+    color: #444;
+}
+
+.project-edit-toggle {
+    margin-left: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #ddd;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s, border-color 0.2s;
+}
+.project-edit-toggle:hover { background: rgba(255,255,255,0.12); }
+.project-edit-toggle.is-active {
+    background: #f59e0b;
+    color: #111;
+    border-color: #f59e0b;
+}
+
+/* =============================================
+   MAIN CONTENT
+   - Images container max 1440px, centered
+   - Top padding: header height (≈60px) + 40px gap = 100px
+   ============================================= */
+.project-main {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 100px 0 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.project-main img,
+.project-main video {
+    width: 100%;
+    display: block;
+    border-radius: 0;
+    background: #111;
+}
+
+/* ----- intro / description ----- */
+.project-intro {
+    width: 100%;
+    margin-bottom: 32px;
+}
+.project-description {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    max-width: 760px;
+    display: none;
+}
+.project-description.has-content { display: block; }
+body.is-editing .project-description { display: block; }
+body.is-editing .project-description:empty::before {
+    content: '＋ 双击此处添加项目简介…';
+    color: #444;
+    font-style: italic;
+}
+
+/* ----- image list ----- */
+.project-images {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.project-image {
+    width: 100%;
+    position: relative;
+    user-select: none;
+}
+.project-image img,
+.project-image video {
+    width: 100%;
+    display: block;
+    background: #111;
+    border-radius: 0;
+}
+
+/* ----- add-image button (visible only in edit mode) ----- */
+.project-add-image {
+    width: 100%;
+    padding: 56px 24px;
+    margin-top: 24px;
+    background: rgba(255,255,255,0.04);
+    border: 2px dashed rgba(255,255,255,0.15);
+    color: #777;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+body.is-editing .project-add-image { display: block; }
+.project-add-image:hover {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.5);
+    color: #f59e0b;
+}
+
+/* ============ EDIT MODE STATES ============ */
+
+/* Image hover affordance */
+body.is-editing .project-image {
+    outline: 2px dashed transparent;
+    outline-offset: -8px;
+    cursor: context-menu;
+    transition: outline-color 0.2s, opacity 0.2s;
+}
+body.is-editing .project-image:hover {
+    outline-color: rgba(245, 158, 11, 0.5);
+}
+body.is-editing .project-image img,
+body.is-editing .project-image video {
+    pointer-events: none;        /* clicks bubble to wrapper */
+}
+body.is-editing .project-image.dragging { opacity: 0.4; }
+body.is-editing .project-image.drag-over {
+    outline-color: #f59e0b;
+    outline-style: solid;
+}
+
+/* Editable text fields */
+body.is-editing .project-header-name,
+body.is-editing .project-header-year,
+body.is-editing .project-description {
+    outline: 1px dashed transparent;
+    outline-offset: 2px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    cursor: text;
+    transition: outline-color 0.2s, background 0.2s;
+}
+body.is-editing .project-header-name:hover,
+body.is-editing .project-header-year:hover,
+body.is-editing .project-description:hover {
+    outline-color: rgba(245, 158, 11, 0.6);
+    background: rgba(245, 158, 11, 0.08);
+}
+body.is-editing [contenteditable="true"] {
+    outline-color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.12) !important;
+}
+
+/* ============ Edit banner ============ */
+.project-edit-banner {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(140px);
+    background: #111;
+    color: #fff;
+    padding: 12px 18px;
+    font-size: 12px;
+    z-index: 200;
+    max-width: calc(100vw - 32px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.5;
+    border: 1px solid #2a2a2a;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.project-edit-banner.is-visible {
+    transform: translateX(-50%) translateY(0);
+}
+.project-edit-tip { text-align: center; max-width: 720px; }
+.project-edit-actions {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+}
+.project-edit-actions button {
+    font-family: inherit;
+    font-size: 12px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.project-edit-actions button:hover {
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.3);
+}
+.project-edit-actions button.primary {
+    background: #f59e0b; color: #111; border-color: #f59e0b; font-weight: 500;
+}
+.project-edit-actions button.primary:hover {
+    background: #fbbf24; border-color: #fbbf24;
+}
+
+/* ============ Context menu ============ */
+.project-ctx-menu {
+    position: fixed;
+    z-index: 9999;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 4px;
+    display: none;
+    min-width: 180px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    font-family: inherit;
+}
+.project-ctx-menu button {
+    display: block; width: 100%; text-align: left;
+    padding: 8px 12px; font-size: 12px;
+    color: #fff; background: none; border: none;
+    cursor: pointer; font-family: inherit;
+}
+.project-ctx-menu button:hover:not(:disabled) { background: #2a2a2a; }
+.project-ctx-menu button:disabled { color: #555; cursor: not-allowed; }
+.project-ctx-menu button.danger { color: #f87171; }
+.project-ctx-menu hr {
+    border: none; border-top: 1px solid #2a2a2a; margin: 4px 0;
+}
+
+/* 404 状态 */
+.project-not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 16px;
+    color: #444;
+}
+
+.project-not-found h2 {
+    font-size: 24px;
+    font-weight: 300;
+    color: #666;
+}
+
+.project-not-found a {
+    font-size: 13px;
+    color: #555;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.project-not-found a:hover {
+    color: #fff;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 1480px) {
+    /* below 1440 + 40px gutter — pull main in from viewport edges */
+    .project-main {
+        padding-left:  20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-header {
+        padding: 16px 24px;
+    }
+
+    .project-header-info {
+        gap: 8px;
+    }
+
+    .project-header-name {
+        font-size: 13px;
+    }
+
+    .project-main {
+        /* mobile header ≈50px + 40px gap = 90px */
+        padding: 90px 16px 60px;
+        gap: 0;
+    }
+}
