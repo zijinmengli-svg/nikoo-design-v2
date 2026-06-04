@@ -50,6 +50,12 @@ body.is-panning .p2-strip { bottom: -60px !important; transition: none !importan
   flex-direction: row;
   gap: 40px;
   will-change: transform;
+  /* Initial rest state (card 0 centered) baked into CSS so the strip is
+     positioned on first paint — without this, the un-transformed strip sits
+     at the scaler origin (viewport center) and the card flashes into the
+     bottom-right corner until scroll.js loads (FOUC). JS overrides this with
+     the same value at panPos = 0: translateX(panPos - 600) translateY(-50%). */
+  transform: translateX(-600px) translateY(-50%);
 }
 
 /* ============ Individual Card ============ */
