@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="李彬 logo">
+  <rect width="100" height="100" rx="20" fill="#252525"/>
+  <g transform="translate(20, 22) scale(0.9677)" fill="#FEE900">
+    <rect x="0" y="0" width="26" height="26"/>
+    <path d="M32,0 L49,0 C56.1797017,0 62,5.82029825 62,13 C62,20.1797017 56.1797017,26 49,26 L32,26 L32,0 Z"/>
+    <path d="M32,32 L49,32 C56.1797017,32 62,37.8202983 62,45 C62,52.1797017 56.1797017,58 49,58 L32,58 L32,32 Z"/>
+    <rect x="0" y="32" width="26" height="26"/>
+  </g>
+</svg>
