@@ -5,7 +5,7 @@
   'use strict';
 
   /* ── Config ── */
-  var CARD_COUNT  = 7;
+  var CARD_COUNT  = 6;   /* Vibe Cooding 卡暂时隐藏（原 7；恢复时改回 7）*/
   var CARD_W      = 1200;
   var CARD_GAP    = 40;
   var CARD_STEP   = CARD_W + CARD_GAP; // 1240
@@ -78,16 +78,15 @@
   function setupParallax() {
     /* Selectors for the main animated element in each card */
     var map = {
-      1: ['#card-01 .c01-a', '#card-01 .c01-i'],
-      2: ['#card-02 .c02-text'],
-      3: ['#card-03 .c03-text'],
-      4: ['#card-04 .c04-text'],
-      5: ['#card-05 .c05-text'],
-      6: ['#card-06 .c06-manifesto']
+      1: ['#card-01'],
+      2: ['#card-02 .c-proj-title'],
+      3: ['#card-03 .c-proj-title'],
+      5: ['#card-06 .contact-lines']   /* 隐藏 Vibe 卡后，联系卡位于第 6 张(index 5)；恢复时改回 6 */
     };
-    for (var i = 1; i <= 6; i++) {
-      var els = [];
+    for (var i = 1; i < CARD_COUNT; i++) {
       var sels = map[i];
+      if (!sels) continue;
+      var els = [];
       for (var j = 0; j < sels.length; j++) {
         var el = document.querySelector(sels[j]);
         if (el) els.push(el);

@@ -1,0 +1,849 @@
+/* ── 设计稿嵌入字体（已按本页用到的字形子集化）── */
+@font-face {
+  font-family: "HarmonyOS Sans SC";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "HarmonyOS Sans SC";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DINPro";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/DINPro-Bold.woff2") format("woff2");
+}
+
+:root {
+  --bg: #000;
+  --bar: rgba(26, 26, 26, .8);
+  --panel: #1f1f1f;
+  --panel-soft: #151515;
+  --text: #f4f4f4;
+  --muted: #6e6e6e;
+  --muted-2: #9b9b9b;
+  --accent: #FEE900;
+  --white-card: #f7f7f7;
+  --topbar-height: 68px;
+  --page-x: clamp(28px, 12.5vw, 240px);
+  --content-max: 1440px;
+  --font-display: "HarmonyOS Sans SC", "PingFang SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-num: "DINPro", "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  border-radius: 0;
+  font: inherit;
+}
+
+.text-strong {
+  font-weight: 500;            /* 设计稿：强调文字为 PingFang SC Medium */
+  color: #d9d9d9;
+}
+
+.accent,
+.contact-section h2 span {
+  color: var(--accent);
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--topbar-height);
+  padding: 0 clamp(24px, 5vw, 96px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bar);
+  color: #e0e0e0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 18px 44px rgba(0,0,0,.26);
+}
+
+/* 全站统一返回样式（以 project.html .project-back 为准）*/
+.back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+  transition: color 0.2s;
+}
+.back:hover { color: #fff; }
+.back-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  opacity: 0.5;                 /* 白色切图弱化为灰，hover 提亮 */
+  transition: opacity 0.2s;
+}
+.back:hover .back-icon { opacity: 1; }
+
+.topbar nav {
+  display: flex;
+  gap: clamp(22px, 2.7vw, 52px);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.topbar nav a:hover {
+  color: var(--accent);        /* 顶部导航 hover 黄色；返回按钮 hover 走 .back:hover(白) */
+}
+
+.page {
+  width: 100%;
+  overflow: visible;
+}
+
+.page-section {
+  min-height: 100svh;
+}
+
+.section-inner {
+  width: min(calc(100% - var(--page-x) * 2), var(--content-max));
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: calc(var(--topbar-height) + 48px) 0 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero 底图：用户重新导出的切图（@2x 3840×2000 / @1x 1920×1000，照片居右 + 左侧渐变淡黑已烘焙进图片），满幅铺底 */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("../images/about/about-hero-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+}
+
+/* 渐变已烘焙进底图，此层保留作极轻微的文字区兜底 */
+.hero-mask {
+  position: absolute;
+  inset: 0;
+  background: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.brand-mark {
+  width: clamp(42px, 3vw, 58px);
+  height: clamp(42px, 3vw, 58px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 6px;
+  margin-bottom: clamp(28px, 3.8vh, 44px);
+}
+
+.brand-mark span {
+  background: var(--accent);
+}
+
+.brand-mark span:nth-child(2),
+.brand-mark span:nth-child(4) {
+  border-radius: 0 18px 18px 0;
+}
+
+.eyebrow,
+.kicker {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 24px;             /* 设计稿：PingFang SC Regular 24px */
+  line-height: 1;
+  font-weight: 400;
+  text-transform: uppercase;
+  white-space: nowrap;         /* —— WORKFLOW 等始终单行不换行 */
+}
+
+.kicker::before {
+  content: "";
+  display: inline-block;
+  width: clamp(32px, 2.5vw, 48px);
+  height: 1px;
+  margin-right: 10px;
+  vertical-align: middle;
+  background: #555;
+}
+
+.hero h1,
+.section-inner h2 {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+.hero h1 {
+  font-size: 80px;             /* 设计稿：HarmonyOS Sans SC Medium 80px */
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.muted-title {
+  color: #555;
+}
+
+.hero-copy,
+.section-lead,
+.body-copy p {
+  margin: 32px 0 0;
+  color: #999999;
+  font-size: 20px;             /* 设计稿：PingFang SC Light 20px / 行高 38px(1.9) */
+  line-height: 1.9;
+  font-weight: 300;
+  overflow-wrap: anywhere;
+}
+/* 文字显示区间按设计稿各自的文本框宽度 */
+/* 顶部正文：按视口比例动态适配一屏（设计稿 920/1920≈48vw），上限 920px、下限 480px */
+.hero-copy    { width: min(100%, clamp(480px, 48vw, 920px)); }
+.section-lead { width: min(100%, 1320px); }  /* 设计稿 1320px */
+.body-copy p  { width: min(100%, 1268px); }  /* 设计稿 1268px */
+
+.body-copy p + p {
+  margin-top: 0;
+}
+
+.profile-meta {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);   /* 列随内容宽；配合 space-between 让文字间距均匀 */
+  justify-content: space-between;                   /* 四项在内容宽度内等间距分布（同设计稿）*/
+  gap: clamp(28px, 4vw, 80px);
+  width: 100%;                                       /* 铺满内容区（设计稿四项跨满 1440）*/
+  margin-top: clamp(46px, 6vh, 72px);
+  padding-top: 0;
+}
+
+.profile-meta b {
+  display: block;
+  color: #ffffff;
+  font-size: 30px;             /* 用户指定 30px（设计稿原 36px 偏大）*/
+  line-height: 1.4;
+  font-weight: 400;
+  white-space: nowrap;         /* 各项指标保持单行 */
+}
+
+.profile-meta span {
+  display: block;
+  margin-top: 10px;
+  color: #666666;
+  font-size: 18px;             /* 设计稿：PingFang SC Regular 18px */
+  font-weight: 400;
+}
+
+.section-inner h2 {
+  font-size: 60px;             /* 设计稿：HarmonyOS Sans SC Bold 60px */
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.ai-badge {
+  width: fit-content;
+  margin-bottom: 28px;
+  padding: 6px 12px;
+  border: 1px solid rgba(254,233,0,.28);
+  background: rgba(254,233,0,.08);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(42px, 8vw, 160px);
+  width: 100%;
+  margin-top: clamp(54px, 6vh, 82px);
+}
+
+.metrics article {
+  padding: 0;
+}
+
+.metrics b {
+  display: block;
+  color: #ffffff;
+  font-family: var(--font-num);
+  font-size: 60px;             /* 设计稿：DINPro Bold 60px */
+  line-height: 1;
+  font-weight: 700;
+}
+
+.metrics span {
+  display: block;
+  margin-top: 14px;
+  color: #666666;
+  font-size: 18px;             /* 设计稿：PingFang SC Regular 18px */
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.workflow-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-top: clamp(42px, 5vh, 68px);
+}
+
+.workflow-cards article {
+  padding: 24px 16px;          /* 左右收窄给正文+链接更多宽度，避免链接掉到第 3 行 */
+  background: var(--white-card);
+  color: #161616;
+}
+
+.wf-icon {
+  width: 40px;
+  height: 40px;
+  display: block;
+  margin-bottom: 10px;         /* 收紧图标与标题间距，压低卡片高度 */
+}
+
+.workflow-cards h3 {
+  margin: 0;
+  color: #1f1f1f;
+  font-size: 30px;             /* 设计稿：PingFang SC Semibold 30px */
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+.workflow-cards p {
+  margin: 12px 0 0;
+  color: #666666;
+  /* 16px=设计稿(1920)字号；窄屏按列宽等比缩到 ~11px，确保正文+末尾链接挤在 2 行内 */
+  font-size: clamp(12px, 0.85vw, 16px);
+  font-weight: 400;
+  line-height: 1.4;            /* 设计稿卡片正文行高 ≈1.375 */
+}
+
+/* 工作流卡片正文内的彩色链接（设计稿 #5A50FF）—— 网站/下载/抖音号 */
+.wf-link {
+  color: #5A50FF;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color .2s;
+}
+.wf-link:hover { color: #4036d6; text-decoration: underline; text-underline-offset: 3px; }
+button.wf-link {                 /* 二维码弹窗触发用 button：清掉默认底色/边框 */
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+/* 抖音二维码弹窗（点击「尼库科技」弹出） */
+.wf-qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wf-qr-modal[hidden] { display: none; }
+.wf-qr-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+}
+.wf-qr-card {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  padding: 32px 32px 24px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+}
+.wf-qr-img {
+  width: min(300px, 78vw);
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.wf-qr-cap {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+}
+.wf-qr-close {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  width: 32px; height: 32px;
+  background: none;
+  border: 0;
+  font-size: 26px;
+  line-height: 1;
+  color: #999;
+  cursor: pointer;
+  transition: color .2s;
+}
+.wf-qr-close:hover { color: #111; }
+
+/* ===== 滚动「响应式分行」入场 · 首屏防闪兜底 =====
+   line-reveal.js 运行前先隐藏目标文字（脚本会逐个接管显示并播放动画）；
+   脚本缺失/超时会移除 reveal-armed，文字照常显示，绝不会一直隐藏。 */
+html.reveal-armed .hero h1,
+html.reveal-armed .hero-copy,
+html.reveal-armed .about-section h2,
+html.reveal-armed .about-section .body-copy p,
+html.reveal-armed .workflow-section h2,
+html.reveal-armed .workflow-cards h3,
+html.reveal-armed .workflow-cards p,
+html.reveal-armed .experience-section h2,
+html.reveal-armed .experience-section .section-lead,
+html.reveal-armed .contact-section h2,
+html.reveal-armed .contact-section .body-copy p {
+  visibility: hidden;
+}
+.reveal-line { will-change: transform; }
+
+.experience-section {
+  overflow: visible;
+}
+
+.experience-section .section-inner {
+  min-height: 100svh;
+  padding: calc(var(--topbar-height) + 36px) 0 48px;
+  justify-content: center;
+}
+
+.experience-head {
+  margin-bottom: clamp(28px, 4vh, 54px);
+}
+
+.experience-list {
+  width: 100%;
+}
+
+.job {
+  position: relative;
+  width: 100%;
+  padding: clamp(26px, 3vh, 44px) 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display: grid;
+  grid-template-columns: clamp(160px, 16vw, 237px) minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: padding .25s ease;
+}
+
+/* 悬停高亮：灰块(#1f1f1f)左右铺满至视口边缘，内容仍居中对齐 */
+.job::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  background: var(--panel);
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+
+.job > * {
+  position: relative;
+  z-index: 1;
+}
+
+.job:hover::before,
+.job:focus-visible::before {
+  opacity: 1;
+}
+
+.job:focus-visible {
+  outline: none;
+}
+
+.job:last-child {
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.job-date b {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--accent);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.job-date span {
+  display: block;
+  color: #666666;
+  font-size: 14px;
+  line-height: 1.75;
+  font-weight: 400;
+}
+
+.job-role {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 22px;             /* 设计稿：PingFang SC Medium 22px */
+  font-weight: 500;
+}
+
+.job h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;             /* 设计稿：PingFang SC Medium 22px */
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.job-desc,
+.job-results p {
+  color: #999999;
+  font-size: 20px;             /* 设计稿：PingFang SC Regular 20px */
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* 描述：收起态也常驻可见（对应设计稿默认显示简介）*/
+.job-desc {
+  max-width: 1114px;
+  margin: 14px 0 0;
+}
+
+/* 业绩：仅悬停/聚焦时展开（设计稿展开态 454px 的增量内容）*/
+.job-results {
+  display: grid;
+  gap: 10px;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, opacity .25s ease, margin .3s ease;
+}
+
+.job:hover .job-results,
+.job:focus-visible .job-results {
+  max-height: 200px;
+  margin-top: 16px;
+  opacity: 1;
+}
+
+.job-results p {
+  display: flex;
+  align-items: center;        /* 箭头与右侧文字垂直居中对齐 */
+  gap: 8px;
+  margin: 0;
+}
+
+.job-results p::before {
+  content: "↑";
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, opacity .25s ease, margin .3s ease;
+}
+
+.job:hover .tags,
+.job:focus-visible .tags {
+  max-height: 60px;
+  margin-top: 18px;
+  opacity: 1;
+}
+
+/* 标签：设计稿为 10% 不透明度纯色填充块（无描边）；前两个黄色强调 */
+.tags span {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 20px;
+  color: #999999;
+  background: rgba(153,153,153,.1);
+  border: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tags span:nth-child(-n+2) {
+  color: var(--accent);
+  background: rgba(254,233,0,.1);
+}
+
+.contact-inner {
+  justify-content: flex-end;
+}
+
+.contact-section h2 {
+  font-size: 60px;             /* 设计稿：HarmonyOS Sans SC Bold 60px */
+  line-height: 1.35;
+}
+
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  align-items: center;
+  width: 100%;
+  margin-top: clamp(48px, 8vh, 92px);
+  color: #ffffff;
+  font-size: 28px;             /* 设计稿：PingFang SC Regular 28px */
+  font-weight: 400;
+}
+
+/* 联系项：默认显示标签，悬停/聚焦切换为真实值，点击复制（见 about.js）。
+   标签与值用 grid 同格堆叠，按较宽者（邮箱）撑宽，切换时无位移。 */
+.contact-item {
+  display: grid;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ci-label,
+.ci-value {
+  grid-area: 1 / 1;
+  transition: opacity .22s ease;
+}
+
+.ci-value {
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.contact-copy:hover .ci-label,
+.contact-copy:focus-visible .ci-label {
+  opacity: 0;
+}
+
+.contact-copy:hover .ci-value,
+.contact-copy:focus-visible .ci-value {
+  opacity: 1;
+}
+
+.contact-item:focus-visible {
+  outline: none;
+}
+
+.contact-portfolio {
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.contact-portfolio:hover {
+  color: var(--accent);
+}
+
+/* 复制成功提示 */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%) translateY(16px);
+  padding: 14px 28px;
+  background: #1f1f1f;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 400;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 44px rgba(0,0,0,.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 9999;
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 1180px) {
+  :root {
+    --page-x: clamp(32px, 7vw, 90px);
+  }
+
+  .profile-meta,
+  .metrics,
+  .workflow-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-links {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 36px;
+  }
+
+  .contact-links a:last-child {
+    justify-self: start;
+  }
+
+  /* 窄屏等比缩小（桌面以设计稿固定字号为准，此处为优雅降级）*/
+  .hero h1 { font-size: 60px; }
+  .section-inner h2,
+  .contact-section h2 { font-size: 48px; }
+  .metrics b { font-size: 48px; }
+  .profile-meta b { font-size: 30px; }
+  .eyebrow,
+  .kicker { font-size: 20px; }
+  .hero-copy,
+  .section-lead,
+  .body-copy p,
+  .job-desc,
+  .job-results p { font-size: 18px; }
+  .workflow-cards h3 { font-size: 26px; }
+  .job-role,
+  .job h3 { font-size: 20px; }
+  .contact-links { font-size: 24px; }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --topbar-height: 68px;
+    --page-x: 32px;
+  }
+
+  .topbar {
+    padding: 0 24px;
+  }
+
+  .topbar nav {
+    display: none;
+  }
+
+  .section-inner {
+    padding: calc(var(--topbar-height) + 44px) 0 56px;
+  }
+
+  .hero-bg {
+    width: 100%;
+    height: 72%;
+    background-position: center top;
+  }
+
+  .hero-mask {
+    width: 100%;
+    height: 72%;
+    background: linear-gradient(to top, rgba(0,0,0,0) 28%, #000 100%);
+  }
+
+  .hero h1 {
+    font-size: 48px;
+  }
+
+  .section-inner h2 {
+    font-size: 38px;
+  }
+
+  .profile-meta,
+  .metrics,
+  .workflow-cards,
+  .contact-links {
+    grid-template-columns: 1fr;
+  }
+
+  .job {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .experience-section {
+    overflow: visible;
+  }
+
+  .job h3,
+  .job-role {
+    font-size: 20px;
+  }
+
+  .contact-section h2 { font-size: 38px; }
+  .metrics b { font-size: 40px; }
+  .profile-meta b { font-size: 28px; }
+  .eyebrow,
+  .kicker { font-size: 18px; }
+  .hero-copy,
+  .section-lead,
+  .body-copy p,
+  .job-desc,
+  .job-results p { font-size: 16px; }
+  .hero-copy { width: 100%; }          /* 手机端顶部正文铺满 */
+  .workflow-cards h3 { font-size: 24px; }
+  .contact-links { font-size: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

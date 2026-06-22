@@ -9,16 +9,22 @@
 <body>
 
   <header class="cat-header">
-    <a href="index.html" class="cat-back" id="catBack">← 返回</a>
+    <a href="index.html" class="cat-back" id="catBack" aria-label="返回">
+      <img class="cat-back-icon" src="images/icons/back-icon@2x.png"
+           srcset="images/icons/back-icon@2x.png 2x, images/icons/back-icon@3x.png 3x" alt="">
+      <span>返回</span>
+    </a>
     <div class="cat-name" id="catName"></div>
   </header>
 
   <script>
+    /* 返回 — 回到进入本页的上一级；无历史时退回首页。 */
     document.getElementById('catBack').addEventListener('click', function (e) {
-      if (window.history.length > 1 && document.referrer &&
-          document.referrer !== window.location.href) {
-        e.preventDefault();
+      e.preventDefault();
+      if (window.history.length > 1) {
         window.history.back();
+      } else {
+        window.location.href = 'index.html';
       }
     });
   </script>
@@ -63,6 +69,25 @@
        ============================================================ -->
   <script>
     var CATEGORIES = {
+      'all': {
+        name: 'More designs',
+        heading: 'More designs',
+        description: '主项目以外的设计合集 · 持续补充',
+        projects: [
+          { key: 'flashparty', name: '闪聚',                  intro: '社交娱乐 APP · 直播、图文社区与狼人杀等多人派对玩法',       cover: 'images/flashparty/A2-01.webp' },
+          { key: 'blockpixel', name: 'Block Pixel Puzzle',    intro: '像素方块风格的休闲益智消除游戏',                         cover: 'images/blockpixel/06-01.webp' },
+          { key: 'kejiji',     name: '客集集直播',             intro: '保险行业的直播带看小程序 · 直播互动与活动专题',           cover: 'images/kejiji/05-01.webp' },
+          { key: 'capybara',   name: '水豚大夫 — 门店管理系统',  intro: '面向宠物门店的 B 端管理系统 · 商品、订单与会员一体化',     cover: 'images/capybara/08-01.webp' },
+          { key: 'databoard',  name: '宠胖胖数据大屏',          intro: '宠胖胖业务数据可视化大屏 · 经营指标实时监控',             cover: 'images/otherui/08-04.webp' },
+          { key: 'otherui',    name: '车机系统设计',            intro: '车载出行系统界面 · 导航、行程与车机交互设计',             cover: 'images/otherui/cartravel-app-1.webp' },
+          { key: 'visual-01',  name: 'AI项目-猫咪性格测试',     intro: 'AI 猫咪性格测试 · 趣味互动 H5',                          cover: 'images/visual/09-01.webp' },
+          { key: 'visual-02',  name: '海报作品',               intro: '品牌与运营活动的主题海报合集',                           cover: 'images/visual/09-02.webp' },
+          { key: 'visual-03',  name: '平面设计',               intro: '品牌 VI 与平面物料设计',                                 cover: 'images/visual/A6-6.webp' },
+          { key: 'visual-04',  name: '其他设计',               intro: '早期视觉与平面设计作品',                                 cover: 'images/visual/D1-7.webp' },
+          /* 动效设计：统一入口 → 进动效瀑布流(masonry) */
+          { key: 'motion',     name: '动效设计',               intro: '交互动效、界面微交互与 IP 动画合集',                     cover: 'images/motion/pet-ip-24f-iSpt-poster.webp', link: 'category.html?cat=motion' }
+        ]
+      },
       'consumer-ux': {
         name: 'C 端体验设计',
         heading: 'C 端体验设计',
@@ -78,10 +103,11 @@
         heading: 'B 端体验设计',
         description: '面向企业与专业用户的复杂系统设计 · 销售管理、医疗专业工具、直播运营、UI 项目集',
         projects: [
-          { key: 'crm',      name: 'OTO 保险业务销售 CRM',  year: '2022',      cover: 'images/crm/07-01.webp' },
-          { key: 'capybara', name: '水豚大夫 — 宠胖胖 SaaS', year: '2022–2023', cover: 'images/capybara/08-01.webp' },
-          { key: 'kejiji',   name: '客集集直播',             year: '2019',      cover: 'images/kejiji/05-01.webp' },
-          { key: 'otherui',  name: '其他 UI 设计',           year: '2018–2020', cover: 'images/otherui/08-04.webp' }
+          { key: 'crm',       name: 'OTO 保险业务销售 CRM',  year: '2022',      cover: 'images/crm/07-01.webp' },
+          { key: 'capybara',  name: '水豚大夫 — 宠胖胖 SaaS', year: '2022–2023', cover: 'images/capybara/08-01.webp' },
+          { key: 'kejiji',    name: '客集集直播',             year: '2019',      cover: 'images/kejiji/05-01.webp' },
+          { key: 'databoard', name: '宠胖胖数据大屏',          year: '2022–2024', cover: 'images/otherui/08-04.webp' },
+          { key: 'otherui',   name: '车机系统设计',            year: '2018–2020', cover: 'images/otherui/cartravel-app-1.webp' }
         ]
       },
       'ai': {
@@ -414,7 +440,7 @@
           item = document.createElement('div');         /* not a link in masonry mode */
         } else {
           item = document.createElement('a');
-          item.href = 'project.html?p=' + pk;
+          item.href = p.link || ('project.html?p=' + pk);   /* p.link: 动效设计 → ?cat=motion */
         }
         item.className = 'cat-item';
         item.dataset.projectKey = pk;
@@ -465,7 +491,14 @@
         titleEl.dataset.field = 'name';
         var yearEl = document.createElement('div');
         yearEl.className = 'cat-year';
-        yearEl.textContent = savedItem.year || p.year;
+        /* More designs：以一句项目介绍替代年份（intro 存在时优先显示） */
+        var introTxt = savedItem.intro || p.intro;
+        if (introTxt) {
+          yearEl.textContent = introTxt;
+          yearEl.classList.add('cat-intro-line');
+        } else {
+          yearEl.textContent = savedItem.year || p.year || '';
+        }
         yearEl.dataset.projectKey = pk;
         yearEl.dataset.field = 'year';
         meta.appendChild(titleEl);

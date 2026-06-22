@@ -10,13 +10,20 @@
 <body>
 
     <header class="project-header">
-        <a href="index.html" class="project-back" id="projectBack">
-            <span class="project-back-arrow">←</span> 返回
+        <a href="index.html" class="project-back" id="projectBack" aria-label="返回">
+            <img class="project-back-icon" src="images/icons/back-icon@2x.png"
+                 srcset="images/icons/back-icon@2x.png 2x, images/icons/back-icon@3x.png 3x" alt="">
+            <span>返回</span>
         </a>
         <div class="project-header-info">
             <span class="project-header-name"  id="projectName"  data-field="name"></span>
-            <span class="project-header-year"  id="projectYear"  data-field="year"></span>
         </div>
+        <a class="project-next" id="projectNext" href="#" hidden>
+            <span class="project-next-label">下一个项目</span>
+            <span class="project-next-name" id="projectNextName"></span>
+            <img class="project-next-icon" src="images/icons/next-icon@2x.png"
+                 srcset="images/icons/next-icon@2x.png 2x, images/icons/next-icon@3x.png 3x" alt="">
+        </a>
     </header>
 
     <main class="project-main" id="projectMain">
@@ -27,12 +34,14 @@
     </main>
 
     <script>
-        /* Back button — prefer browser history. */
+        /* 返回 — 回到进入本页的上一级（浏览器历史）；无历史时退回首页。
+           不再依赖 document.referrer（本地/缓存场景常为空，会误退回首页）。 */
         document.getElementById('projectBack').addEventListener('click', function (e) {
-            if (window.history.length > 1 && document.referrer &&
-                document.referrer !== window.location.href) {
-                e.preventDefault();
+            e.preventDefault();
+            if (window.history.length > 1) {
                 window.history.back();
+            } else {
+                window.location.href = 'index.html';
             }
         });
     </script>
@@ -137,26 +146,34 @@
                     'images/kejiji/05-05.webp','images/kejiji/05-06.webp'
                 ]
             },
+            /* 宠胖胖数据大屏 — 从原「其他 UI 设计」中拆分为独立项目 */
+            databoard: {
+                name: '宠胖胖数据大屏',
+                year: '2022–2024',
+                images: [
+                    'images/otherui/08-04.webp'
+                ]
+            },
+            /* 车机系统设计 — 原「其他 UI 设计」剩余内容 */
             otherui: {
-                name: '其他 UI 设计',
+                name: '车机系统设计',
                 year: '2018–2020',
                 images: [
-                    'images/otherui/08-04.webp',
-                    'images/otherui/A6-1-motorcycle.webp',
                     'images/otherui/cartravel-app-1.webp',
                     'images/otherui/cartravel-app-2.webp',
-                    'images/otherui/cartravel-app-3.webp'
+                    'images/otherui/cartravel-app-3.webp',
+                    'images/otherui/A6-1-motorcycle.webp'
                 ]
             },
 
             /* ──────── 卡片 5 · 视觉设计（4 个项目）──────── */
             'visual-01': {
-                name: '视觉作品 01',
+                name: 'AI项目-猫咪性格测试',
                 year: '2023',
                 images: ['images/visual/09-01.webp']
             },
             'visual-02': {
-                name: '视觉作品 02',
+                name: '海报作品',
                 year: '2022',
                 images: [
                     'images/visual/09-02.webp',
@@ -165,7 +182,7 @@
                 ]
             },
             'visual-03': {
-                name: '视觉作品 03',
+                name: '平面设计',
                 year: '2020',
                 images: [
                     'images/visual/A6-6.webp',
@@ -174,7 +191,7 @@
                 ]
             },
             'visual-04': {
-                name: '视觉作品 04',
+                name: '其他设计',
                 year: '2018',
                 images: ['images/visual/D1-7.webp']
             },
@@ -185,6 +202,13 @@
             'motion-03': { name: '交互原型',      year: '2023', images: ['images/01-02.png'], placeholder: true },
             'motion-04': { name: '微交互探索',    year: '2022', images: ['images/01-01.png'], placeholder: true }
         };
+
+        /* 全局项目顺序 — 详情页右上角「下一个项目」按此循环跳转 */
+        var PROJECT_ORDER = [
+            'miaosheng', 'pet', 'crm', 'flashparty', 'blockpixel',
+            'kejiji', 'capybara', 'databoard', 'otherui',
+            'visual-01', 'visual-02', 'visual-03', 'visual-04'
+        ];
 
         (function () {
             'use strict';
@@ -233,7 +257,7 @@
                     mainEl.innerHTML = [
                         '<div class="project-not-found">',
                         '  <h2>项目未找到</h2>',
-                        '  <a href="../nikoo-design-v2/">← 返回首页</a>',
+                        '  <a href="../nikoo-design-v2/">返回首页</a>',
                         '</div>'
                     ].join('');
                     return;
@@ -302,7 +326,7 @@
             function renderText() {
                 document.title = project.name + ' — Nikoo Design';
                 nameEl.textContent = project.name;
-                yearEl.textContent = project.year;
+                if (yearEl) yearEl.textContent = project.year;   /* 顶部仅显示项目名，年份元素已移除 */
                 descEl.textContent = project.description || '';
                 descEl.classList.toggle('has-content', !!project.description);
             }
@@ -335,6 +359,29 @@
             }
             renderText();
             renderImages();
+            setupNextNav();
+
+            /* ============ 右上角「下一个项目」导航 ============ */
+            function setupNextNav() {
+                var nextEl     = document.getElementById('projectNext');
+                var nextNameEl = document.getElementById('projectNextName');
+                if (!nextEl || !nextNameEl) return;
+
+                var idx = PROJECT_ORDER.indexOf(key);
+                if (idx === -1) { nextEl.hidden = true; return; }   /* 占位/未列入顺序的项目不显示 */
+
+                var nextKey = PROJECT_ORDER[(idx + 1) % PROJECT_ORDER.length];   /* 末项循环回首项 */
+                var base    = PROJECTS[nextKey] || {};
+                var bakedN  = BAKED_PROJECTS[nextKey] || {};
+                nextNameEl.textContent = bakedN.name || base.name || '下一个项目';
+                nextEl.hidden = false;
+                nextEl.setAttribute('href', 'project.html?p=' + nextKey);
+                nextEl.onclick = function (e) {
+                    e.preventDefault();
+                    /* 用 replace：不堆叠历史，返回键始终回到进入详情页的上一级 */
+                    window.location.replace('project.html?p=' + nextKey);
+                };
+            }
 
             function refresh() {
                 project = getEffective();

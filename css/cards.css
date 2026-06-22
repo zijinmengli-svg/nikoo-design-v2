@@ -1,3 +1,19 @@
+/* 设计稿标题字体（子集化，与履历页共用）*/
+@font-face {
+  font-family: "HarmonyOS Sans SC";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "HarmonyOS Sans SC";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+}
+
 /* ============ Shared utilities ============ */
 
 /* Small label top-left of each card */
@@ -93,20 +109,138 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
-  line-height: 1.06;
+  line-height: 1.375;
 }
 
 .c00-bio span {
   display: block;
   font-size: 80px;
-  font-weight: 800;
-  color: #242424;
-  letter-spacing: -0.03em;
-  font-family: -apple-system, "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  color: #252525;
+  letter-spacing: 0;
+  font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, "Helvetica Neue", sans-serif;
 }
 
-/* Rauno-style alternate-line indent */
-.c00-bio span:nth-child(even) { padding-left: 60px; }
+/* 首页第一张卡片 · 文案「遮罩上升」入场动效（每次加载播放）
+   参考 GSAP「ignore nested elements」的 SplitText 行遮罩 reveal：
+   外层 span 作遮罩(overflow:hidden)，内层 .c00-rise 从遮罩下方升入。
+   仅动画，不改字体/字号/字重/排版。 */
+.c00-bio > span { overflow: hidden; }            /* 行遮罩 */
+.c00-rise {
+  display: block;
+  animation: c00-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.c00-bio > span:nth-child(1) .c00-rise { animation-delay: 0.15s; }
+.c00-bio > span:nth-child(2) .c00-rise { animation-delay: 0.27s; }
+.c00-bio > span:nth-child(3) .c00-rise { animation-delay: 0.39s; }
+.c00-bio > span:nth-child(4) .c00-rise { animation-delay: 0.51s; }
+.c00-bio > span:nth-child(5) .c00-rise { animation-delay: 0.63s; }
+@keyframes c00-rise {
+  from { transform: translateY(115%); }
+  to   { transform: translateY(0); }
+}
+/* 无障碍：用户开启「减少动态效果」时直接展示，不做位移 */
+@media (prefers-reduced-motion: reduce) {
+  .c00-rise { animation: none; }
+}
+
+/* ===========================================================
+   首页改版卡片 · 严格按设计稿坐标(卡片 1200×700 内绝对定位)
+   =========================================================== */
+.card-proj { background: #fff; }
+.card-contact { background: #FFF700; }   /* 联系卡：黄底 */
+
+/* 项目大标题(宠胖胖 / CRM系统)：设计稿 300px，左缘 0、上 140，超宽溢出裁切 */
+.c-proj-title {
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%) translateX(var(--parallax-x, 0px));   /* 随滚动视差滑动 */
+  will-change: transform;
+  margin: 0;
+  font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 500; font-size: 300px; line-height: 1.4;
+  color: #252525; white-space: nowrap;
+}
+
+/* 卡片3 · 宠胖胖：标题左 150(设计稿)，胖豚 IP 239×239 @ (905,280) */
+.card-02 { background: #fff; }
+.card-02 .c-proj-title { left: 150px; }
+.card-02 .mascot {
+  position: absolute;
+  left: 905px; top: 280px;
+  width: 239px; height: 239px;
+  z-index: 4;
+  cursor: pointer;
+}
+
+/* More designs / Vibe Cooding：120px 居中 */
+.c-big {
+  position: absolute;
+  left: 0; right: 0; top: 266px;
+  margin: 0; text-align: center;
+  font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 500; font-size: 120px; line-height: 1.4;
+  color: #252525;
+}
+
+/* ===== 卡片5「More designs」· 字符逐个翻入动效（参考 GSAP animate-text 的 characters）
+   滚动到该卡片时由 index.html 的脚本加 .is-revealing 触发；脚本按 prefers-reduced-motion 决定是否拆分 ===== */
+#card-04 .c-big.md-split { perspective: 800px; }
+.md-char { display: inline-block; will-change: transform, opacity; }
+#card-04 .c-big.md-split .md-char { opacity: 0; }            /* 揭示前隐藏 */
+#card-04 .c-big.md-split.is-revealing .md-char {
+  animation: md-char-in 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: calc(var(--i) * 0.045s);                  /* 逐字符错峰 */
+}
+@keyframes md-char-in {
+  from { opacity: 0; transform: translateY(0.45em) rotateX(-90deg) scale(0.85); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* More 卡四角标签：60px(用内联 left/top 精确定位) */
+.c-corner {
+  position: absolute; margin: 0;
+  font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 500; font-size: 60px; line-height: 1.4;
+  color: #252525;
+}
+
+/* 联系卡文案：左 53 / 上 110，80px，四行 */
+.contact-lines {
+  position: absolute;
+  left: 53px; top: 110px;
+  transform: translateX(var(--parallax-x, 0px));   /* 随滚动视差滑动(同旧版) */
+  will-change: transform;
+}
+.contact-lines p {
+  margin: 0;
+  font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
+  font-weight: 500; font-size: 80px; line-height: 1.5;
+  color: #252525; white-space: nowrap;
+}
+.wx-copy {
+  font: inherit; color: #252525;
+  background: transparent; border: 0; padding: 0;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+.wx-copy:hover { opacity: .6; }
+
+/* 复制成功 toast */
+.toast {
+  position: fixed;
+  left: 50%; bottom: 48px;
+  transform: translateX(-50%) translateY(16px);
+  padding: 14px 28px;
+  background: #1f1f1f; color: #ffffff;
+  font: 400 15px "PingFang SC", -apple-system, sans-serif;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 18px 44px rgba(0,0,0,.4);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 9500;
+}
+.toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ===========================================================
    Card 01 — AI 设计
@@ -115,33 +249,50 @@
    =========================================================== */
 .card-01 { background: #fff; }
 
-.c01-circle {
+/* 红圆(#FE2D38)：居中于卡片(left 250 → 圆心 600)，随滚动以 0.5 速率视差滑动 */
+.card-01 .ms-circle {
   position: absolute;
-  left: 500px; top: 0;
+  left: 250px; top: 0;
   width: 700px; height: 700px;
   border-radius: 50%;
-  background: #FF5800;
+  background: #FE2D38;
   z-index: 1;
+  transform: translateX(calc(var(--parallax-x, 0px) * 0.5));
+  will-change: transform;
 }
-
-/* Shared style for both letter elements */
-.c01-a,
-.c01-i {
+/* 秒省 Logo：静止时居中于红圆(left 303 → 中心 600)，垂直居中 */
+.card-01 .ms-logo {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%) translateX(var(--parallax-x, 0px));
-  font-size: 600px;
-  font-weight: 900;
-  color: #242424;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  font-family: -apple-system, "Helvetica Neue", sans-serif;
-  z-index: 2;
+  left: 303px; top: 50%;
+  width: 595px; height: auto;
   user-select: none;
+  pointer-events: none;
+  will-change: transform;
 }
-
-.c01-a { left: 38px; }
-.c01-i { left: 497px; }
+/* 深色层 / 反白层共用裁剪容器：随红圆以 0.5 速率视差滑动；
+   内部 Logo 再 0.5 → 合计 1.0，两层 Logo 始终重合，裁剪圆(0.5)与之错位形成滑动「反白」*/
+.card-01 .ms-clip {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc(var(--parallax-x, 0px) * 0.5));
+  pointer-events: none;
+  will-change: transform;
+}
+.card-01 .ms-clip .ms-logo {
+  transform: translateY(-50%) translateX(calc(var(--parallax-x, 0px) * 0.5));
+}
+/* 反白层：红圆「内」显示白 Logo */
+.card-01 .ms-clip-white {
+  z-index: 3;
+  clip-path: circle(350px at 600px 350px);
+}
+/* 深色层：红圆「外」才显示深色 Logo —— 用径向遮罩挖掉圆内区域，
+   使白 Logo 下方不再压着一张黑色 Logo，从根本上消除「秒省」边缘渗出的黑色描边 */
+.card-01 .ms-clip-dark {
+  z-index: 2;
+  -webkit-mask: radial-gradient(circle at 600px 350px, transparent 349.5px, #000 350px);
+          mask: radial-gradient(circle at 600px 350px, transparent 349.5px, #000 350px);
+}
 
 /* ===========================================================
    Cards 02–05 — Category cards

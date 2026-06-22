@@ -4,16 +4,26 @@
    ============================================================ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+@font-face {
+  font-family: "HarmonyOS Sans SC"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "HarmonyOS Sans SC"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("../fonts/HarmonyOS_Sans_SC_Medium.woff2") format("woff2");
+}
+
 :root {
-  --bg:         #ede9e3;
-  --fg:         #1a1a1a;
-  --fg-muted:   #6b6b6b;
-  --fg-faint:   rgba(0,0,0,0.45);
-  --card-bg:    #ffffff;
-  --border:     rgba(0,0,0,0.08);
-  --shadow:     0 2px 24px rgba(0,0,0,0.06);
-  --shadow-hov: 0 6px 40px rgba(0,0,0,0.12);
-  --font:       -apple-system, "Helvetica Neue", "PingFang SC", sans-serif;
+  --bg:         #000000;
+  --fg:         #ffffff;
+  --fg-muted:   #999999;
+  --fg-faint:   #666666;
+  --card-bg:    #141414;
+  --border:     rgba(255,255,255,0.10);
+  --shadow:     0 2px 24px rgba(0,0,0,0.40);
+  --shadow-hov: 0 6px 40px rgba(0,0,0,0.60);
+  --font:       "PingFang SC", -apple-system, "Helvetica Neue", sans-serif;
+  --font-display: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
@@ -40,7 +50,7 @@ img, video { display: block; max-width: 100%; }
   justify-content: space-between;
   padding: 18px 40px;
   gap: 16px;                                  /* prevent overlap when squeezed */
-  background: rgba(237, 233, 227, 0.88);
+  background: rgba(10, 10, 10, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
@@ -54,13 +64,23 @@ img, video { display: block; max-width: 100%; }
   .cat-intro h2 { font-size: 28px; }
 }
 
+/* 全站统一返回样式（以 project.html .project-back 为准）*/
 .cat-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 13px;
-  color: var(--fg-muted);
+  color: #555;
   transition: color 0.2s;
-  letter-spacing: -0.005em;
 }
-.cat-back:hover { color: var(--fg); }
+.cat-back-icon {
+  width: 18px; height: 18px;
+  display: block;
+  opacity: 0.5;                 /* 白色切图弱化为灰，hover 提亮 */
+  transition: opacity 0.2s;
+}
+.cat-back:hover { color: #fff; }
+.cat-back:hover .cat-back-icon { opacity: 1; }
 
 .cat-name {
   font-size: 14px;
@@ -109,8 +129,9 @@ img, video { display: block; max-width: 100%; }
   max-width: 720px;
 }
 .cat-intro h2 {
+  font-family: var(--font-display);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.2;
   margin-bottom: 8px;
@@ -138,7 +159,7 @@ img, video { display: block; max-width: 100%; }
   display: block;
   margin: 0;                               /* gap handled by JS positioning */
   cursor: default;
-  background: #ffffff;
+  background: #141414;
   border-radius: 16px;
   overflow: hidden;
   will-change: transform;
@@ -153,7 +174,7 @@ img, video { display: block; max-width: 100%; }
 .cat-grid[data-layout="masonry"] .cat-cover {
   aspect-ratio: auto;
   cursor: default;
-  background: #ffffff;
+  background: #141414;
   border-radius: 0;
 }
 .cat-grid[data-layout="masonry"] .cat-cover img,
@@ -265,7 +286,7 @@ body.edit-mode .cat-grid[data-layout="masonry"] .cat-meta {
 .cat-cover {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #f0ece6;
+  background: #141414;
   border-radius: 0;
   overflow: hidden;
   position: relative;
@@ -278,7 +299,7 @@ body.edit-mode .cat-grid[data-layout="masonry"] .cat-meta {
   height: 100%;
   object-fit: cover;
   display: block;
-  background: #f0ece6;
+  background: #141414;
 }
 .cat-item:hover .cat-cover {
   transform: scale(1.015);
@@ -303,6 +324,12 @@ body.edit-mode .cat-grid[data-layout="masonry"] .cat-meta {
   font-size: 12px;
   color: var(--fg-faint);
   letter-spacing: 0;
+}
+/* More designs：用一句项目介绍替代年份时的排版 */
+.cat-year.cat-intro-line {
+  color: var(--fg-muted);
+  line-height: 1.45;
+  max-width: 96%;
 }
 
 /* ============ Empty state ============ */

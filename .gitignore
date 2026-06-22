@@ -1,1 +1,11 @@
 .DS_Store
+
+# 本地开发文件，不参与部署
+.claude/
+dev-server.py
+
+# 开发期演示页（不对外展示）
+mascot-demo.html
+ms-demo.html
+particle-a.html
+particle-b.html

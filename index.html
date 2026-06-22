@@ -21,122 +21,70 @@
     <!-- Card strip: translateX updated by scroll.js -->
     <div class="card-strip" id="cardStrip">
 
-      <!-- External labels: positioned above each card (cards 01–06 only) -->
-      <div class="ext-label" style="left:1240px;">AI Design</div>
-      <div class="ext-label" style="left:2480px;">Consumer UX</div>
-      <div class="ext-label" style="left:3720px;">Enterprise UX</div>
-      <div class="ext-label" style="left:4960px;">Visual Design</div>
-      <div class="ext-label" style="left:6200px;">Motion Design</div>
-      <div class="ext-label" style="left:7440px;">Explorations</div>
+      <!-- External labels: positioned above each card -->
+      <div class="ext-label" style="left:0px;">个人履历</div>
+      <div class="ext-label" style="left:1240px;">AI Agent体验设计</div>
+      <div class="ext-label" style="left:2480px;">宠胖胖-宠物社区设计</div>
+      <div class="ext-label" style="left:3720px;">B端CRM系统设计</div>
+      <div class="ext-label" style="left:4960px;">其他设计</div>
+      <!-- Vibe Cooding 入口暂时隐藏（内容完善后取消注释，并把 scroll.js 的 CARD_COUNT 改回 7、视差映射 contact 改回 6）
+      <div class="ext-label" style="left:6200px;">Vibe Cooding</div>
+      <div class="ext-label" style="left:7440px;"></div>
+      -->
 
       <!-- Card 00 — 画板 -->
-      <div class="card card-00" id="card-00">
+      <div class="card card-00 card-clickable" id="card-00" data-href="about.html">
         <div class="c00-circle"></div>
         <div class="c00-bio">
-          <span>李彬</span>
-          <span>是一位资深的</span>
-          <span>产品设计师</span>
-          <span>打磨 AI 产品</span>
-          <span>让其生长</span>
-          <span>也有价值</span>
+          <span><span class="c00-rise">李彬</span></span>
+          <span><span class="c00-rise">是体验设计师</span></span>
+          <span><span class="c00-rise">致力于将好体验</span></span>
+          <span><span class="c00-rise">转化为</span></span>
+          <span><span class="c00-rise">真实的产品价值</span></span>
         </div>
       </div>
 
-      <!-- Card 01 — AI 设计 -->
+      <!-- Card 02 · AI Agent 秒省（圆形蒙版反白滑动，滑动接 scroll.js 视差）-->
       <div class="card card-01 card-clickable" id="card-01" data-href="project.html?p=miaosheng">
-        <div class="c01-a">A</div>
-        <div class="c01-i">I</div>
-        <div class="c01-circle"></div>
-        <div class="p2-strip">
-          <a class="p2-thumb-link" href="project.html?p=miaosheng">
-            <img decoding="async" class="p2-thumb" src="images/miaosheng/miaosheng-01.webp" alt="秒省助手">
-          </a>
-          <span class="p2-names">秒省助手</span>
-        </div>
+        <div class="ms-circle"></div>
+        <div class="ms-clip ms-clip-dark"><img class="ms-logo ms-dark" src="images/ms/miaosheng-logo-dark.webp" alt="秒省"></div>
+        <div class="ms-clip ms-clip-white"><img class="ms-logo ms-white" src="images/ms/miaosheng-logo-white.webp" alt=""></div>
       </div>
 
       <!-- Card 02 — C端体验设计 -->
-      <div class="card card-02 card-clickable" id="card-02" data-href="category.html?cat=consumer-ux">
-        <div class="c02-text">Consumer UX</div>
-        <div class="p2-strip">
-          <a class="p2-thumb-link" href="project.html?p=pet">
-            <img decoding="async" class="p2-thumb" src="images/pet/A1-01.webp" alt="宠胖胖">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=flashparty">
-            <img decoding="async" class="p2-thumb" src="images/flashparty/A2-01.webp" alt="闪聚">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=blockpixel">
-            <img decoding="async" class="p2-thumb" src="images/blockpixel/06-01.webp" alt="Block Pixel Puzzle">
-          </a>
-          <span class="p2-names">宠胖胖 · 闪聚 · Block Pixel 拼图</span>
-        </div>
+      <!-- Card 03 · 宠胖胖（IP 互动 · 点击进详情）-->
+      <div class="card card-02 card-clickable" id="card-02" data-href="project.html?p=pet">
+        <h2 class="c-proj-title">宠胖胖</h2>
+        <canvas class="mascot" width="400" height="400" aria-label="宠胖胖 IP"></canvas>
       </div>
 
-      <!-- Card 03 — B端体验设计 -->
-      <div class="card card-03 card-clickable" id="card-03" data-href="category.html?cat=enterprise-ux">
-        <div class="c03-text">Enterprise UX</div>
-        <div class="p2-strip">
-          <a class="p2-thumb-link" href="project.html?p=crm">
-            <img decoding="async" class="p2-thumb" src="images/crm/07-01.webp" alt="OTO 保险 CRM">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=capybara">
-            <img decoding="async" class="p2-thumb" src="images/capybara/08-01.webp" alt="水豚大夫">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=kejiji">
-            <img decoding="async" class="p2-thumb" src="images/kejiji/05-01.webp" alt="客集集直播">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=otherui">
-            <img decoding="async" class="p2-thumb" src="images/otherui/08-04.webp" alt="其他 UI 设计">
-          </a>
-          <span class="p2-names">OTO 保险 CRM · 水豚大夫 · 客集集直播 · 其他 UI</span>
-        </div>
+      <!-- Card 04 · B端 CRM 系统 → 详情页 -->
+      <div class="card card-proj card-clickable" id="card-03" data-href="project.html?p=crm">
+        <h2 class="c-proj-title">CRM系统</h2>
       </div>
 
-      <!-- Card 04 — 视觉设计（4 个项目，category 列表页）-->
-      <div class="card card-04 card-clickable" id="card-04" data-href="category.html?cat=visual">
-        <div class="c04-text">Visual</div>
-        <div class="p2-strip">
-          <a class="p2-thumb-link" href="project.html?p=visual-01">
-            <img decoding="async" class="p2-thumb" src="images/visual/09-01.webp" alt="视觉作品 01">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=visual-02">
-            <img decoding="async" class="p2-thumb" src="images/visual/09-02.webp" alt="视觉作品 02">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=visual-03">
-            <img decoding="async" class="p2-thumb" src="images/visual/A6-6.webp" alt="视觉作品 03">
-          </a>
-          <a class="p2-thumb-link" href="project.html?p=visual-04">
-            <img decoding="async" class="p2-thumb" src="images/visual/D1-7.webp" alt="视觉作品 04">
-          </a>
-          <span class="p2-names">视觉作品 01 · 02 · 03 · 04</span>
-        </div>
+      <!-- Card 05 · 其他设计合集 → category 列表(四角标签 + 居中标题) -->
+      <div class="card card-proj card-clickable" id="card-04" data-href="category.html?cat=all">
+        <span class="c-corner" style="left:40px;top:40px;">2014</span>
+        <span class="c-corner" style="right:40px;top:40px;">2026</span>
+        <h2 class="c-big">More designs</h2>
+        <span class="c-corner" style="left:40px;bottom:40px;">UI/UX</span>
+        <span class="c-corner" style="right:40px;bottom:40px;">B/C</span>
       </div>
 
-      <!-- Card 05 — 动效设计（masonry 列表 · hover 播放）-->
-      <div class="card card-05 card-clickable" id="card-05" data-href="category.html?cat=motion">
-        <div class="c05-text">Motion</div>
-        <div class="p2-strip">
-          <a class="p2-thumb-link" href="category.html?cat=motion">
-            <img decoding="async" class="p2-thumb" src="images/motion/pet-ip-24f-iSpt-poster.webp" alt="IP 动画">
-          </a>
-          <a class="p2-thumb-link" href="category.html?cat=motion">
-            <img decoding="async" class="p2-thumb" src="images/motion/pet-like-iSpt-poster.webp" alt="界面微交互">
-          </a>
-          <a class="p2-thumb-link" href="category.html?cat=motion">
-            <img decoding="async" class="p2-thumb" src="images/motion/ms-aimenu-iSpt-poster.webp" alt="入口动效">
-          </a>
-          <span class="p2-names">交互动效 · 界面微交互 · IP 动画</span>
-        </div>
+      <!-- Card 06 · Vibe Cooding 入口暂时隐藏（内容完善后取消注释；并把 scroll.js 的 CARD_COUNT 改回 7、视差映射 contact 改回 6）
+      <div class="card card-proj card-clickable" id="card-05" data-href="">
+        <h2 class="c-big">Vibe Cooding</h2>
       </div>
+      -->
 
-      <!-- Card 06 — 设计探索 -->
-      <div class="card card-06" id="card-06">
-        <div class="c06-manifesto">
-          <p>保持简洁。</p>
-          <p>保持清晰。</p>
-          <p>充满温度。</p>
-          <p>经久不衰。</p>
-          <p>去做。</p>
+      <!-- Card 07 · 联系（点击「联系我」复制微信号）-->
+      <div class="card card-contact" id="card-06">
+        <div class="contact-lines">
+          <p>保持简洁</p>
+          <p>保持清晰</p>
+          <p>充满温度</p>
+          <p>有想法或项目？<button type="button" class="wx-copy" data-wx="Libin_y">——联系我</button></p>
         </div>
       </div>
 
@@ -153,17 +101,85 @@
     <div><div style="font-size:32px;margin-bottom:16px;">🖥</div>请在桌面端浏览，建议宽度 1280px 以上。</div>
   </div>
 
+  <!-- 复制成功提示 -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- 背景粒子光效（已暂时关闭 · 取消下一行注释即可重新开启） -->
+  <!-- <script src="js/bg-particles.js"></script> -->
   <script src="js/scroll.js"></script>
+  <!-- 宠胖胖 IP 互动动画（卡片3，悬停挥手）-->
+  <script src="js/mascot.js"></script>
   <script src="js/version.js"></script>
   <script>
     /* Card click → project detail (not triggered by P2 thumbnail links) */
     document.querySelectorAll('.card-clickable').forEach(function(card) {
       card.addEventListener('click', function(e) {
-        if (e.target.closest('.p2-thumb-link')) return; // let link handle it
+        if (e.target.closest('.wx-copy')) return;        // 联系我按钮自己处理
         var href = card.getAttribute('data-href');
         if (href) window.location.href = href;
       });
     });
+  </script>
+  <script>
+    /* 卡片5「More designs」· 字符逐个翻入（参考 GSAP animate-text 的 characters）
+       滚动到该卡片(进入视口)时播放；尊重「减少动态效果」。 */
+    (function () {
+      var el = document.querySelector('#card-04 .c-big');
+      if (!el) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var text = el.textContent;
+      el.setAttribute('aria-label', text);     /* 拆成单字后用 aria-label 保留可读性 */
+      el.textContent = '';
+      for (var i = 0; i < text.length; i++) {
+        var sp = document.createElement('span');
+        sp.className = 'md-char';
+        sp.style.setProperty('--i', i);
+        if (text.charAt(i) === ' ') { sp.innerHTML = '&nbsp;'; }
+        else { sp.textContent = text.charAt(i); }
+        el.appendChild(sp);
+      }
+      el.classList.add('md-split');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            el.classList.toggle('is-revealing', e.isIntersecting);  /* 进入→播放；离开→移除，再次进入重播 */
+          });
+        }, { threshold: 0.5 });
+        io.observe(el);
+      } else {
+        el.classList.add('is-revealing');       /* 不支持 IO：直接显示 */
+      }
+    })();
+  </script>
+  <script>
+    /* 联系卡：点击「联系我」复制微信号 + toast */
+    (function () {
+      var toast = document.getElementById('toast'), timer = null;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('is-visible');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('is-visible'); }, 1800);
+      }
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){ showToast('已复制微信号到剪切板'); }, fallback);
+        } else { fallback(); }
+        function fallback() {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta); showToast('已复制微信号到剪切板');
+        }
+      }
+      document.querySelectorAll('.wx-copy').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          copyText(btn.getAttribute('data-wx') || 'Libin_y');
+        });
+      });
+    })();
   </script>
   <script>
     (function(){

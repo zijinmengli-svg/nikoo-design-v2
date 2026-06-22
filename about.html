@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>李彬 · 个人履历</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="preload" as="image" href="images/about/about-hero-bg.png">
+  <link rel="stylesheet" href="css/about.css">
+  <script>
+    /* 滚动分行入场 · 首屏防闪：先隐藏目标文字，由 line-reveal.js 接管显示；
+       2.8s 兜底移除，避免脚本异常时文字一直隐藏。reduced-motion 时不启用。 */
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var d = document.documentElement;
+      d.className += (d.className ? ' ' : '') + 'reveal-armed';
+      setTimeout(function () { d.classList.remove('reveal-armed'); }, 2800);
+    })();
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index.html" aria-label="返回">
+      <img class="back-icon" src="images/icons/back-icon@2x.png"
+           srcset="images/icons/back-icon@2x.png 2x, images/icons/back-icon@3x.png 3x" alt="">
+      <span>返回</span>
+    </a>
+    <nav aria-label="页面导航">
+      <a href="#about">关于</a>
+      <a href="#workflow">能力</a>
+      <a href="#experience">经历</a>
+      <a href="#contact">联系</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero page-section" id="top">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-mask" aria-hidden="true"></div>
+      <div class="section-inner hero-content">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <h1>你好<br>我是李彬</h1>
+        <p class="hero-copy">
+          一名经验丰富的体验设计师。我擅长把AI工具编进设计与内容的工作流里——让概念更快成形，让交付更稳，让一个人也能跑出一支团队的产能。<br>
+          主导过AI&nbsp;Agent代买产品从0到1，<span class="text-strong">付费转化峰值61.97%，月复购率44.11%</span>。设计<span class="text-strong">覆盖AI、电商、社交、直播、教育、B端全链路体验设计</span>，能独立扛从策略到交付的完整过程——既做从0到1的搭建，也做核心链路重构、规模化迭代和设计管理。
+        </p>
+        <div class="profile-meta">
+          <article><b>12+</b><span>工作年限</span></article>
+          <article><b>体验设计师</b><span>求职意向</span></article>
+          <article><b>杭州</b><span>期望城市</span></article>
+          <article><b>离职-看机会</b><span>目前状态</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section page-section" id="about">
+      <div class="section-inner">
+        <p class="kicker">ABOUT</p>
+        <h2>设计不是把界面做好看，<br>是<span class="accent">让产品真的好用、真的能转化</span></h2>
+        <div class="body-copy">
+          <p>我做体验设计，核心是把业务目标翻译成产品决策。一个交易流程怎么拆、一个B端系统怎么让效率翻几倍、一个AI功能怎么让用户敢用——从需求洞察一路做到上线复盘，形成闭环，不是只交一套界面。</p>
+          <p>我做过AI产品体验负责人，也当过设计主管和设计owner，能同时扛产品体验、交互策略、设计系统和项目推进，兼顾商业结果、体验品质与交付效率。</p>
+        </div>
+        <div class="metrics">
+          <article><b>61.97%</b><span>秒省助手<br>日货付费转化率峰值</span></article>
+          <article><b>44.11%</b><span>月复购率<br>最高值</span></article>
+          <article><b>2400w+</b><span>门店管理系统<br>支撑年度 GMV</span></article>
+          <article><b>50%</b><span>AI 工作流<br>团队效率提升</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="workflow-section page-section" id="workflow">
+      <div class="section-inner">
+        <p class="kicker">WORKFLOW</p>
+        <h2>AI 不只是工具<br>是我的核心竞争力</h2>
+        <div class="workflow-cards">
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-ux.png" alt="">
+            <h3>体验设计工作流</h3>
+            <p>从 PRD 解析、竞品分析、交互框架生成到输出规范，AI&nbsp;介入设计全流程，减少重复判断，聚焦策略决策。</p>
+          </article>
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-poster.png" alt="">
+            <h3>视觉海报设计工作流</h3>
+            <p>利用AI图像生成与设计规范约束，批量生成符合品牌调性的运营物料，从创意到交付效率大幅提升。</p>
+          </article>
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-commerce.png" alt="">
+            <h3>商城图片生成工作流</h3>
+            <p>结合电商场景需求，自动化生成商品展示图、Banner 等多类型资产，支撑运营高频更新需求。</p>
+          </article>
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-pdf.png" alt="">
+            <h3>PDF精准压缩网站</h3>
+            <p>设计作品集pdf文件很大？无法上传招聘网站？AI写一个精准压缩的工具网站：<a class="wf-link" href="https://tinypdf.cn" target="_blank" rel="noopener noreferrer">tinypdf.cn</a></p>
+          </article>
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-video.png" alt="">
+            <h3>视频素材一键下载工具</h3>
+            <p>做自媒体视频素材不方便下载，AI写一个本地下载工具，适合mac系统：<a class="wf-link" href="downloads/video-downloader-mac-test.zip" download="视频下载器-macOS测试版.zip">点击下载</a></p>
+          </article>
+          <article>
+            <img class="wf-icon" src="images/about/icons/workflow-news.png" alt="">
+            <h3>AI科技资讯视频号</h3>
+            <p>做个AI科技资讯自媒体，从收集、脚本、分镜到成片，全程AI自动化：<button type="button" class="wf-link wf-qr" data-qr="images/about/douyin-qr.jpg" aria-haspopup="dialog">尼库科技</button></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="experience-section page-section" id="experience">
+      <div class="section-inner">
+        <div class="experience-head">
+          <p class="kicker">EXPERIENCE</p>
+          <h2>每段经历，<br>都在啃更难的骨头。</h2>
+          <p class="section-lead">设计跨越 AI 产品、电商、社区、教育、本地生活与B端CRM和SAAS系统——不同战场，同一套用数据验证设计价值的方法论。</p>
+        </div>
+
+        <div class="experience-list" aria-label="工作经历">
+          <button class="job" type="button" aria-expanded="false">
+            <div class="job-date">
+              <b>浙江畅唐网络</b>
+              <span>2025.06</span><span>–</span><span>2026.04</span>
+            </div>
+            <div class="job-body">
+              <p class="job-role">资深体验设计师</p>
+              <h3>秒省助手 · AI 消费助手</h3>
+              <p class="job-desc">作为秒省助手项目核心设计负责人，围绕生活服务电商与 AI Agent 代买业务，主导微信小程序商城、AI 对话下单、订单确认、履约反馈、售后闭环及运营后台全链路体验设计。通过「用户自选 + AI 代买」双路径重构交易流程，同步搭建设计规范与 AI 工作流。</p>
+              <div class="job-results">
+                <p>累计订单近 1.2 万，累计注册超 6000</p>
+                <p>日活付费转化峰值 61.97%，月复购率最高 44.11%</p>
+                <p>建立三套 AI 工作流，设计效率提升约 50%</p>
+              </div>
+              <div class="tags"><span>AI Agent</span><span>AI 设计工作流</span><span>电商</span><span>微信小程序</span><span>Design Owner</span></div>
+            </div>
+          </button>
+
+          <button class="job" type="button" aria-expanded="false">
+            <div class="job-date">
+              <b>杭州宠胖胖</b>
+              <span>2022.08</span><span>–</span><span>2024.10</span>
+            </div>
+            <div class="job-body">
+              <p class="job-role">资深 UI 设计师</p>
+              <h3>宠胖胖宠物社区 · 电商 · B 端</h3>
+              <p class="job-desc">负责宠物社区、电商、医疗、活体交易等核心业务体验设计，主导 APP 动态中心、养宠、会员及胖豆体系等关键模块，并主导水豚大夫门店管理系统从 0 到 1 的 B 端设计。</p>
+              <div class="job-results">
+                <p>200 万级用户产品核心模块改版，用户满意度 8.5 分以上</p>
+                <p>社区与直播链路优化，用户停留时长提升至 5 分钟以上</p>
+                <p>门店管理系统支撑年度 GMV 达 2400 万以上</p>
+                <p>AI 萌宠咨询上线三个月咨询量增长 320%</p>
+              </div>
+              <div class="tags"><span>AI 咨询产品</span><span>宠物社区</span><span>B 端系统</span><span>鸿蒙适配</span><span>设计规范</span></div>
+            </div>
+          </button>
+
+          <button class="job" type="button" aria-expanded="false">
+            <div class="job-date">
+              <b>杭州兑吧科技</b>
+              <span>2021.08</span><span>–</span><span>2022.07</span>
+            </div>
+            <div class="job-body">
+              <p class="job-role">UED 设计主管</p>
+              <h3>客集集直播 · 销售CRM</h3>
+              <p class="job-desc">负责保险业务 C 端获客与 B 端销售两大场景，主导高端养老保险销售 CRM 系统从 0 到 1 搭建，同步推进小程序改版与活动专题设计，搭建跨团队设计管理与评审机制。</p>
+              <div class="job-results">
+                <p>CRM 系统操作流程效率提升 300%</p>
+                <p>前端开发理解与实现成本下降 82%</p>
+                <p>业务预约率提升 55%</p>
+              </div>
+              <div class="tags"><span>CRM 系统</span><span>设计管理</span><span>B2C 获客</span><span>组件规范</span></div>
+            </div>
+          </button>
+
+          <button class="job" type="button" aria-expanded="false">
+            <div class="job-date">
+              <b>吉利(地动科技)</b>
+              <span>2020.04</span><span>–</span><span>2021.07</span>
+            </div>
+            <div class="job-body">
+              <p class="job-role">UED 设计主管</p>
+              <h3>闪聚社交 APP</h3>
+              <p class="job-desc">主导闪聚社交 APP 整体体验升级，覆盖直播、图文社区、视频聊及狼人杀、斗地主等互动玩法，统筹插画、动效、UI 多角色协作，建立设计标准与评审机制。</p>
+              <div class="job-results">
+                <p>主导 APP 2.0 版本整体升级，社交/直播/游戏一体化体系建设</p>
+                <p>建立设计评审机制，提升多人协作方案一致性</p>
+              </div>
+              <div class="tags"><span>社交 APP</span><span>直播</span><span>互动游戏</span><span>团队管理</span></div>
+            </div>
+          </button>
+
+          <button class="job" type="button" aria-expanded="false">
+            <div class="job-date">
+              <b>更早经历</b>
+              <span>2014.09</span><span>–</span><span>2020.06</span>
+            </div>
+            <div class="job-body">
+              <p class="job-role">UI 设计师 / 资深视觉设计师</p>
+              <h3>富聊社交 · ABC360/兰迪英语 · 奥肯设计</h3>
+              <p class="job-desc">先后在富聊科技（陌生人社交）、ABC360/兰迪英语（在线教育）、奥肯设计（品牌平面）等公司历练，覆盖付费社交商业化、多端教学产品、品牌 VI 体系等多元场景。</p>
+              <div class="job-results">
+                <p>富聊核心链路优化，用户使用时长从 24.8 分钟提升至 35.6 分钟，增长 43%</p>
+                <p>Zen Jigsaw 次日留存率从 27% 提升至 45%，使用时长增长超 300%</p>
+              </div>
+              <div class="tags"><span>陌生人社交</span><span>在线教育</span><span>海外产品</span><span>品牌 VI</span></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section page-section" id="contact">
+      <div class="section-inner contact-inner">
+        <div>
+          <p class="kicker">CONTACT</p>
+          <h2>在找一个能扛复杂业务的设计师？<br>来聊聊</h2>
+          <div class="body-copy">
+            <p>我做体验设计，核心是把业务目标翻译成产品决策。一个交易流程怎么拆、一个B端系统怎么让效率翻几倍、一个AI功能怎么让用户敢用——我习惯从需求洞察一路做到上线复盘,形成闭环,而不是只交一套界面。</p>
+            <p>12年里,我做过AI产品体验负责人,也当过设计主管和设计owner,能同时扛产品体验、交互策略、设计系统和项目推进,兼顾商业结果、体验品质与交付效率。</p>
+          </div>
+        </div>
+        <div class="contact-links">
+          <button type="button" class="contact-item contact-copy" data-copy="329809563@qq.com" aria-label="复制邮箱 329809563@qq.com">
+            <span class="ci-label">个人邮箱</span>
+            <span class="ci-value">329809563@qq.com</span>
+          </button>
+          <button type="button" class="contact-item contact-copy" data-copy="Libin_y" aria-label="复制微信号 Libin_y">
+            <span class="ci-label">联系微信</span>
+            <span class="ci-value">Libin_y</span>
+          </button>
+          <button type="button" class="contact-item contact-copy" data-copy="13758231257" aria-label="复制电话 13758231257">
+            <span class="ci-label">联系电话</span>
+            <span class="ci-value">13758231257</span>
+          </button>
+          <a class="contact-item contact-portfolio" href="project.html?p=miaosheng">看看作品 →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- 抖音二维码弹窗（点击工作流卡片「尼库科技」弹出） -->
+  <div class="wf-qr-modal" id="wfQrModal" role="dialog" aria-modal="true" aria-label="抖音二维码" hidden>
+    <div class="wf-qr-backdrop" data-qr-close></div>
+    <div class="wf-qr-card">
+      <button type="button" class="wf-qr-close" data-qr-close aria-label="关闭">×</button>
+      <img class="wf-qr-img" id="wfQrImg" src="" alt="抖音二维码">
+      <p class="wf-qr-cap" id="wfQrCap">抖音扫码关注</p>
+    </div>
+  </div>
+
+  <script>
+    /* 工作流卡片「尼库科技」→ 弹出抖音二维码 */
+    (function () {
+      var modal = document.getElementById('wfQrModal');
+      if (!modal) return;
+      var img = document.getElementById('wfQrImg');
+      var cap = document.getElementById('wfQrCap');
+      img.addEventListener('error', function () {
+        img.style.display = 'none';
+        cap.textContent = '二维码待上传：images/about/douyin-qr.png';
+      });
+      img.addEventListener('load', function () { img.style.display = 'block'; });
+      function open(src, title) {
+        img.style.display = 'block';
+        cap.textContent = title || '抖音扫码关注';
+        img.src = src;
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+      }
+      function close() { modal.hidden = true; img.src = ''; document.body.style.overflow = ''; }
+      document.querySelectorAll('.wf-qr').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          open(btn.getAttribute('data-qr'), btn.getAttribute('data-title'));
+        });
+      });
+      modal.addEventListener('click', function (e) {
+        if (e.target.hasAttribute('data-qr-close')) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !modal.hidden) close();
+      });
+    })();
+  </script>
+
+  <script src="js/about.js"></script>
+
+  <!-- 滚动「响应式分行」入场动效（GSAP 自托管，避免国内 CDN 慢）-->
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/vendor/SplitText.min.js"></script>
+  <script src="js/line-reveal.js"></script>
+</body>
+</html>

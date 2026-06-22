@@ -45,6 +45,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
     padding: 20px 60px;
     background: rgba(8, 8, 8, 0.92);
     backdrop-filter: blur(12px);
@@ -65,16 +66,60 @@ a {
     color: #fff;
 }
 
-.project-back-arrow {
-    font-size: 16px;
-    line-height: 1;
+/* 统一返回图标（白色切图，弱化为灰，hover 提亮） */
+.project-back-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    opacity: 0.5;
+    transition: opacity 0.2s;
 }
+.project-back:hover .project-back-icon { opacity: 1; }
 
 .project-header-info {
     display: flex;
     align-items: center;
     gap: 14px;
+    min-width: 0;
 }
+
+/* 右上角「下一个项目」导航 — 单行：标签 + 项目名 + 箭头切图 */
+.project-next {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #777;
+    transition: color 0.2s;
+    max-width: 48%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.project-next[hidden] { display: none; }
+.project-next:hover { color: #fff; }
+.project-next-label {
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+}
+.project-next-name {
+    font-size: 13px;
+    color: #ccc;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    transition: color 0.2s;
+}
+.project-next:hover .project-next-name { color: #fff; }
+.project-next-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+.project-next:hover .project-next-icon { opacity: 1; }
 
 .project-header-name {
     font-size: 14px;
@@ -132,7 +177,7 @@ a {
 /* ----- intro / description ----- */
 .project-intro {
     width: 100%;
-    margin-bottom: 32px;
+    margin-bottom: 0;            /* 空简介不再撑高；首图距顶部导航 40px（由 .project-main 的 padding-top 100px 控制）*/
 }
 .project-description {
     font-size: 14px;
@@ -142,7 +187,7 @@ a {
     max-width: 760px;
     display: none;
 }
-.project-description.has-content { display: block; }
+.project-description.has-content { display: block; margin-bottom: 32px; }
 body.is-editing .project-description { display: block; }
 body.is-editing .project-description:empty::before {
     content: '＋ 双击此处添加项目简介…';
@@ -359,6 +404,10 @@ body.is-editing [contenteditable="true"] {
     .project-header-name {
         font-size: 13px;
     }
+
+    .project-next { max-width: 40%; gap: 6px; }
+    .project-next-label { display: none; }
+    .project-next-name { font-size: 12px; }
 
     .project-main {
         /* mobile header ≈50px + 40px gap = 90px */
