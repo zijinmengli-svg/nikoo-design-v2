@@ -94,6 +94,9 @@ body.is-panning .p2-strip { bottom: -60px !important; transition: none !importan
 
 /* 设计稿样式：未选中 = #666666 细线；选中 = #FFFFFF 描边方框 */
 .mm-tick {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
   width: 2px;
   height: 18px;
   border-radius: 0;
@@ -105,6 +108,10 @@ body.is-panning .p2-strip { bottom: -60px !important; transition: none !importan
               height     0.28s cubic-bezier(0.4, 0, 0.2, 1),
               background 0.2s ease,
               box-shadow 0.2s ease;
+}
+.mm-tick:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
 }
 .mm-tick:hover {
   background: #9b9b9b;

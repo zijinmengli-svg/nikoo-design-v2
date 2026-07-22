@@ -4,23 +4,28 @@
 (function () {
   'use strict';
 
+  var Core = window.ScrollCore;
+  if (!Core) throw new Error('ScrollCore must load before scroll.js');
+
   /* ── Config ── */
   var CARD_COUNT  = 6;   /* Vibe Cooding 卡暂时隐藏（原 7；恢复时改回 7）*/
   var CARD_W      = 1200;
   var CARD_GAP    = 40;
   var CARD_STEP   = CARD_W + CARD_GAP; // 1240
-  var MAX_PAN     = (CARD_COUNT - 1) * CARD_STEP; // 7440
+  var MAX_PAN     = (CARD_COUNT - 1) * CARD_STEP; // 6200
   var CARD_HALF   = CARD_W / 2; // 600  — strip centering offset
+  var GESTURE_THRESHOLD = 40;
+  var GESTURE_SILENCE   = 160;
 
   /* Pan spring — rauno.me source: stiffness 500, damping 50
      (stiffness 600/damping 80 was the circle element; the strip pan
       uses the softer 500/50 pair for that silky glide feel)          */
   var PAN_K = 500, PAN_D = 50;
 
-  /* Scale spring — exact rauno.me params: stiffness:500 damping:50.
-     Explicit-Euler stability check: D·dt/M = 50×0.016/1 = 0.80 ✓
-     ζ = D/(2√KM) = 50/(2×√500) = 1.12 → overdamped, no oscillation. */
+  /* Scale spring — exact rauno.me params: stiffness:500 damping:50. */
   var SCL_K = 500, SCL_D = 50, SCL_M = 1;
+  var SPRING_STEP = 1 / 120;
+  var SPRING_MAX_ELAPSED = 0.1;
 
   /* Parallax: text moves at PARALLAX_FACTOR × card's offset from center
      — creates a "sliding left-to-right" motion within the card          */
@@ -32,6 +37,8 @@
   var scaler  = document.getElementById('cardsScaler');
   var strip   = document.getElementById('cardStrip');
   var minimap = document.getElementById('minimap');
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var reduceMotion = motionQuery.matches;
 
   /* ── Pan state ── */
   var panPos    = 0;
@@ -45,10 +52,16 @@
   var scaleTarget = 1;
 
   /* ── Snap / panning state ── */
-  var activeIdx  = 0;
-  var snapTimer  = null;
+  var activeIdx  = 0; /* committed card only — animation never mutates this */
+  var previewIdx = 0;
+  var wheelTimer = null;
   var rafId      = null;
   var lastTime   = null;
+  var wheelGesture = Core.createGestureController({
+    threshold: GESTURE_THRESHOLD,
+    sensitivity: 0.5,
+    cardCount: CARD_COUNT
+  });
 
   /* ── Parallax cache: { cardIdx, elements[] } for cards 1-6 ── */
   var parallaxItems = [];
@@ -61,9 +74,9 @@
   (function buildMinimap() {
     for (var i = 0; i < CARD_COUNT; i++) {
       (function (idx) {
-        var t = document.createElement('div');
+        var t = document.createElement('button');
+        t.type = 'button';
         t.className = 'mm-tick' + (idx === 0 ? ' active' : '');
-        t.setAttribute('role', 'button');
         t.setAttribute('aria-label', 'Card ' + (idx + 1));
         t.addEventListener('click', function () { snapToCard(idx); });
         minimap.appendChild(t);
@@ -136,13 +149,12 @@
   /* ================================================================
      Update minimap
      ================================================================ */
-  function updateMinimap(rawProgress) {
-    var idx = Math.max(0, Math.min(CARD_COUNT - 1, Math.round(rawProgress)));
-    if (idx !== activeIdx) {
-      ticks[activeIdx].classList.remove('active');
-      ticks[idx].classList.add('active');
-      activeIdx = idx;
-    }
+  function renderMinimap(idx) {
+    idx = Core.clamp(Math.round(idx), 0, CARD_COUNT - 1);
+    if (idx === previewIdx) return;
+    ticks[previewIdx].classList.remove('active');
+    ticks[idx].classList.add('active');
+    previewIdx = idx;
   }
 
   /* ================================================================
@@ -155,58 +167,55 @@
   /* ================================================================
      Wheel handler
      ================================================================ */
+  function cancelWheelGesture() {
+    clearTimeout(wheelTimer);
+    wheelTimer = null;
+    wheelGesture.reset();
+  }
+
+  function finishWheelGesture() {
+    var state = wheelGesture.getState();
+    wheelTimer = null;
+    wheelGesture.reset();
+    if (state.active && !state.locked) snapToCard(activeIdx, true);
+  }
+
   window.addEventListener('wheel', function (e) {
     e.preventDefault();
 
-    /* deltaMode normalization — rauno.me 540 chunk source:
-       mode 0 = pixels (trackpad), mode 1 = lines ×40, mode 2 = pages ×800 */
-    var rawX = e.deltaX, rawY = e.deltaY;
-    if (e.deltaMode === 1) { rawX *= 40; rawY *= 40; }
-    if (e.deltaMode === 2) { rawX *= 800; rawY *= 800; }
-    /* Sum both axes so horizontal AND vertical scroll both drive the pan */
-    panTarget -= (rawX + rawY) * 0.5;
-    panTarget  = Math.max(-MAX_PAN, Math.min(0, panTarget));
+    var delta = Core.normalizeWheelDelta(e.deltaX, e.deltaY, e.deltaMode);
+    if (!delta) return;
+    if (!wheelGesture.getState().active) wheelGesture.begin(activeIdx);
 
-    /* ROOT FIX: clamp panTarget to ±1 card-step from the active card's rest pos.
-       Without this, Mac trackpad inertia events (fired after finger lift) keep
-       accumulating panTarget to -5000+ px, making the strip fly off-screen
-       ("画面错乱清空") and causing a visible spring reversal on snap ("反弹").
-       Clamp lets the user scroll at most 1 card ahead/behind at a time. */
-    var cardRest = -(activeIdx * CARD_STEP);
-    panTarget = Math.max(cardRest - CARD_STEP, Math.min(cardRest + CARD_STEP, panTarget));
-    panTarget = Math.max(-MAX_PAN, Math.min(0, panTarget)); /* re-apply global bounds */
+    var result = wheelGesture.push(delta);
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(finishWheelGesture, GESTURE_SILENCE);
 
-    setPanning(true);
-
-    /* Direction-based snap — measured from the CURRENT card's position.
-       Move ≥ 40 px left  → snap forward 1 card.
-       Move ≥ 40 px right → snap backward 1 card.
-       Small nudge        → stay on current card (no snap-back to origin). */
-    clearTimeout(snapTimer);
-    snapTimer = setTimeout(function () {
-      var currentPan = -(activeIdx * CARD_STEP);
-      var diff = panTarget - currentPan;   /* negative = moved left */
-      var idx;
-      if      (diff < -40) { idx = activeIdx + 1; }   /* forward  */
-      else if (diff >  40) { idx = activeIdx - 1; }   /* backward */
-      else                 { idx = activeIdx;     }   /* hold     */
-      snapToCard(Math.max(0, Math.min(CARD_COUNT - 1, idx)));
-    }, 160);
-
-    kick();
+    if (result.phase === 'preview') {
+      if (!reduceMotion) {
+        var cardRest = -(activeIdx * CARD_STEP);
+        panTarget = Core.clamp(cardRest - result.offset, -MAX_PAN, 0);
+        setPanning(true);
+        kick();
+      }
+    } else if (result.phase === 'commit') {
+      snapToCard(result.index, true);
+    }
   }, { passive: false });
 
   /* ================================================================
      Touch / trackpad swipe
      ================================================================ */
-  var touchX = 0, touchY = 0, touchAxis = null, touchLast = 0;
+  var touchX = 0, touchY = 0, touchAxis = null;
+  var touchStartIdx = 0, touchStartPan = 0;
 
   window.addEventListener('touchstart', function (e) {
-    touchX = touchLast = e.touches[0].clientX;
+    cancelWheelGesture();
+    touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
     touchAxis = null;
-    setPanning(true);
-    clearTimeout(snapTimer);
+    touchStartIdx = activeIdx;
+    touchStartPan = -(activeIdx * CARD_STEP);
   }, { passive: true });
 
   window.addEventListener('touchmove', function (e) {
@@ -215,36 +224,61 @@
     if (!touchAxis) touchAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
     if (touchAxis !== 'x') return;
     e.preventDefault();
-    var moveDelta = e.touches[0].clientX - touchLast;
-    touchLast = e.touches[0].clientX;
-    panTarget += moveDelta;
-    panTarget  = Math.max(-MAX_PAN, Math.min(0, panTarget));
+    setPanning(true);
+    panTarget = Core.clamp(touchStartPan + dx, -MAX_PAN, 0);
     panPos     = panTarget;
+    panVel     = 0;
     applyTransforms();
-    updateMinimap(-panPos / CARD_STEP);
+    renderMinimap(-panPos / CARD_STEP);
     updateParallax();
   }, { passive: false });
 
-  window.addEventListener('touchend', function () {
-    snapTimer = setTimeout(function () {
-      var currentPan = -(activeIdx * CARD_STEP);
-      var diff = panTarget - currentPan;
-      var idx;
-      if      (diff < -40) { idx = activeIdx + 1; }
-      else if (diff >  40) { idx = activeIdx - 1; }
-      else                 { idx = activeIdx;     }
-      snapToCard(Math.max(0, Math.min(CARD_COUNT - 1, idx)));
-    }, 80);
-  }, { passive: true });
+  function finishTouch() {
+    if (touchAxis !== 'x') {
+      setPanning(false);
+      touchAxis = null;
+      return;
+    }
+    var diff = panTarget - touchStartPan;
+    var idx = touchStartIdx;
+    if (diff <= -GESTURE_THRESHOLD) idx += 1;
+    else if (diff >= GESTURE_THRESHOLD) idx -= 1;
+    touchAxis = null;
+    snapToCard(idx);
+  }
+
+  window.addEventListener('touchend', finishTouch, { passive: true });
+  window.addEventListener('touchcancel', finishTouch, { passive: true });
 
   /* ================================================================
      Snap to card
      ================================================================ */
-  function snapToCard(idx) {
-    idx = Math.max(0, Math.min(CARD_COUNT - 1, idx));
+  function settleImmediately() {
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+    lastTime = null;
+    panPos = panTarget;
+    panVel = 0;
+    scaleBase = computeBaseScale();
+    scaleTarget = Math.max(0.6, scaleBase + panPos * 0.00006);
+    scaleCur = scaleTarget;
+    scaleVel = 0;
+    applyTransforms();
+    updateParallax();
+    setPanning(false);
+  }
+
+  function snapToCard(idx, preserveWheel) {
+    if (!preserveWheel) cancelWheelGesture();
+    idx = Core.clamp(idx, 0, CARD_COUNT - 1);
     panTarget = -(idx * CARD_STEP);
-    ticks.forEach(function (t, i) { t.classList.toggle('active', i === idx); });
     activeIdx = idx;
+    renderMinimap(idx);
+    setPanning(true);
+    if (reduceMotion) {
+      settleImmediately();
+      return;
+    }
     kick();
   }
 
@@ -257,13 +291,19 @@
 
   function frame(now) {
     rafId    = null;
-    var dt   = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0.016;
+    var dt   = lastTime ? (now - lastTime) / 1000 : 0.016;
     lastTime = now;
 
     /* ── Pan spring ── */
-    var fPan = -PAN_K * (panPos - panTarget) - PAN_D * panVel;
-    panVel  += fPan * dt;
-    panPos  += panVel * dt;
+    var nextPan = Core.stepSpring(panPos, panVel, panTarget, dt, {
+      stiffness: PAN_K,
+      damping: PAN_D,
+      mass: 1,
+      maxStep: SPRING_STEP,
+      maxElapsed: SPRING_MAX_ELAPSED
+    });
+    panPos = nextPan.position;
+    panVel = nextPan.velocity;
     var panSettled = Math.abs(panPos - panTarget) < 0.25 && Math.abs(panVel) < 0.25;
     if (panSettled) { panPos = panTarget; panVel = 0; }
 
@@ -281,17 +321,23 @@
     scaleBase = computeBaseScale();
     scaleTarget = Math.max(0.6, scaleBase + panPos * 0.00006);
 
-    var fScl = -SCL_K * (scaleCur - scaleTarget) - SCL_D * scaleVel;
-    scaleVel += (fScl / SCL_M) * dt;
-    scaleCur += scaleVel * dt;
+    var nextScale = Core.stepSpring(scaleCur, scaleVel, scaleTarget, dt, {
+      stiffness: SCL_K,
+      damping: SCL_D,
+      mass: SCL_M,
+      maxStep: SPRING_STEP,
+      maxElapsed: SPRING_MAX_ELAPSED
+    });
+    scaleCur = nextScale.position;
+    scaleVel = nextScale.velocity;
     var sclSettled = Math.abs(scaleCur - scaleTarget) < 0.0001 &&
                      Math.abs(scaleVel) < 0.0001;
     if (sclSettled) { scaleCur = scaleTarget; scaleVel = 0; }
 
     /* ── Apply ── */
     applyTransforms();
-    if (!panSettled) updateMinimap(-panPos / CARD_STEP);
     updateParallax();
+    if (panSettled) setPanning(false); /* clicks need not wait for scale */
 
     /* ── Loop? ── */
     var stillMoving = !panSettled || !sclSettled;
@@ -299,7 +345,7 @@
       rafId = requestAnimationFrame(frame);
     } else {
       lastTime = null;
-      setPanning(false); /* re-enable hover after strip has settled */
+      setPanning(false);
     }
   }
 
@@ -317,6 +363,27 @@
   window.addEventListener('resize', function () {
     scaleBase = computeBaseScale();
     kick();
+  });
+
+  function handleMotionPreference(e) {
+    reduceMotion = e.matches;
+    if (reduceMotion) snapToCard(activeIdx);
+  }
+  if (motionQuery.addEventListener) motionQuery.addEventListener('change', handleMotionPreference);
+  else if (motionQuery.addListener) motionQuery.addListener(handleMotionPreference);
+
+  document.addEventListener('visibilitychange', function () {
+    lastTime = null;
+    if (document.hidden) {
+      cancelWheelGesture();
+      touchAxis = null;
+      panTarget = -(activeIdx * CARD_STEP);
+      renderMinimap(activeIdx);
+      settleImmediately();
+    } else {
+      scaleBase = computeBaseScale();
+      kick();
+    }
   });
 
   /* ================================================================

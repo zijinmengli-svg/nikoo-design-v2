@@ -58,15 +58,16 @@
     });
   }
 
-  var rx = 0, ry = 0, mx = 0, my = 0, auto = 0, raf = null, visible = true;
+  var FRAME_INTERVAL = 1000 / 30;
+  var rx = 0, ry = 0, mx = 0, my = 0, auto = 0, raf = null, lastFrame = 0;
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   addEventListener('pointermove', function (e) {
     mx = e.clientX / innerWidth - 0.5;
     my = e.clientY / innerHeight - 0.5;
   });
   document.addEventListener('visibilitychange', function () {
-    visible = !document.hidden;
-    if (visible && !reduce) start();
+    if (document.hidden) stop();
+    else if (!reduce) start();
   });
 
   function render() {
@@ -88,12 +89,22 @@
     ctx.globalAlpha = 1;
   }
 
-  function loop() {
-    auto += CONFIG.AUTO;
-    render();
+  function loop(t) {
+    raf = null;
+    if (document.hidden) return;
+    if (!lastFrame || t - lastFrame >= FRAME_INTERVAL) {
+      lastFrame = t;
+      auto += CONFIG.AUTO * 2; /* preserve the original 60 FPS rotation speed */
+      render();
+    }
     raf = requestAnimationFrame(loop);
   }
   function start() { if (!raf) raf = requestAnimationFrame(loop); }
+  function stop() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = null;
+    lastFrame = 0;
+  }
 
   if (reduce) { render(); }   // 减弱动效偏好：只画一帧静态
   else start();

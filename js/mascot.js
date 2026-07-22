@@ -15,16 +15,39 @@
     });
   }
 
-  Promise.all([load('idle'), load('wave')]).then(function (imgs) {
-    if (!imgs[0] || !imgs[1]) return;
-    sheets.idle = imgs[0]; sheets.wave = imgs[1];
+  var wavePromise = null;
+
+  function ensureWave() {
+    if (sheets.wave) return Promise.resolve(sheets.wave);
+    if (!wavePromise) {
+      wavePromise = load('wave').then(function (image) {
+        if (image) sheets.wave = image;
+        return image;
+      });
+    }
+    return wavePromise;
+  }
+
+  load('idle').then(function (image) {
+    if (!image) return;
+    sheets.idle = image;
     document.querySelectorAll('canvas.mascot').forEach(init);
   });
 
   function init(canvas) {
     var ctx = canvas.getContext('2d');
-    var state = 'idle', frame = 0, last = 0;
-    canvas.addEventListener('mouseenter', function () { if (state !== 'wave') { state = 'wave'; frame = 0; } });
+    var state = 'idle', frame = 0, last = 0, rafId = null;
+    var inView = false;
+
+    canvas.addEventListener('mouseenter', function () {
+      if (state === 'wave') return;
+      ensureWave().then(function (image) {
+        if (!image) return;
+        state = 'wave';
+        frame = 0;
+        start();
+      });
+    });
 
     function draw(clip, idx) {
       var m = META[clip], sx = (idx % m.cols) * m.fw, sy = Math.floor(idx / m.cols) * m.fw;
@@ -32,6 +55,8 @@
       ctx.drawImage(sheets[clip], sx, sy, m.fw, m.fw, 0, 0, 400, 400);
     }
     function loop(t) {
+      rafId = null;
+      if (!inView || document.hidden) return;
       if (t - last >= 1000 / FPS) {
         last = t;
         draw(state, frame);
@@ -39,8 +64,33 @@
         if (state === 'wave') { if (frame >= META.wave.frames) { state = 'idle'; frame = 0; } }
         else if (frame >= META.idle.frames) { frame = 0; }
       }
-      requestAnimationFrame(loop);
+      rafId = requestAnimationFrame(loop);
     }
-    requestAnimationFrame(loop);
+
+    function start() {
+      if (!rafId && inView && !document.hidden) rafId = requestAnimationFrame(loop);
+    }
+
+    function stop() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+      last = 0;
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView) start();
+        else stop();
+      }, { threshold: 0.05 }).observe(canvas);
+    } else {
+      inView = true;
+      start();
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop();
+      else start();
+    });
   }
 })();
