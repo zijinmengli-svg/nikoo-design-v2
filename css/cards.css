@@ -162,15 +162,25 @@
   color: #252525; white-space: nowrap;
 }
 
-/* 卡片3 · 宠胖胖：标题左 150(设计稿)，胖豚 IP 239×239 @ (905,280) */
+/* 卡片3 · 宠胖胖：英文品牌名较长，保留大字视觉并完整落在卡片内 */
 .card-02 { background: #fff; }
-.card-02 .c-proj-title { left: 150px; }
+.card-02 .c-proj-title {
+  left: 32px;
+  font-size: 160px;
+  letter-spacing: -0.035em;
+}
 .card-02 .mascot {
   position: absolute;
   left: 905px; top: 280px;
   width: 239px; height: 239px;
   z-index: 4;
   cursor: pointer;
+}
+
+/* CRM 标题在卡片静止于视口中央时水平居中，滚动中继续保留视差。 */
+#card-03 .c-proj-title {
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(var(--parallax-x, 0px));
 }
 
 /* More designs / Vibe Cooding：120px 居中 */
