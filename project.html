@@ -5,8 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品详情 — Nikoo Design</title>
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
-    <link rel="stylesheet" href="css/project.css">
+    <link rel="stylesheet" href="css/project.css?v=20261016-1">
     <meta name="theme-color" content="#080808">
+    <script src="js/project-media.js?v=20261016-1"></script>
+    <script>
+        /* 在浏览器恢复旧滚动位置之前接管，确保每次都从作品第一页开始。 */
+        ProjectMedia.resetToTop(window);
+        window.addEventListener('pageshow', function () {
+            requestAnimationFrame(function () {
+                ProjectMedia.resetToTop(window);
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -336,27 +346,60 @@
                 imagesEl.innerHTML = '';
                 project.images.forEach(function (img, idx) {
                     var wrap = document.createElement('div');
-                    wrap.className = 'project-image';
+                    var dimensions = ProjectMedia.getImageDimensions(img);
+                    var loadingHints = ProjectMedia.getLoadingHints(idx);
+                    wrap.className = 'project-image is-loading';
                     wrap.dataset.idx = idx;
                     wrap.draggable = true;
+                    wrap.setAttribute('aria-busy', 'true');
+
+                    function markLoaded() {
+                        wrap.classList.remove('is-loading', 'is-error');
+                        wrap.classList.add('is-loaded');
+                        wrap.setAttribute('aria-busy', 'false');
+                    }
+
+                    function markFailed() {
+                        wrap.classList.remove('is-loading', 'is-loaded');
+                        wrap.classList.add('is-error');
+                        wrap.setAttribute('aria-busy', 'false');
+                    }
+
                     var el;
                     if (img.kind === 'video') {
                         el = document.createElement('video');
-                        el.src = img.src;
                         el.autoplay = true; el.loop = true; el.muted = true;
                         el.playsInline = true;
+                        el.preload = idx === 0 ? 'metadata' : 'none';
+                        el.width = dimensions.width;
+                        el.height = dimensions.height;
                         el.setAttribute('playsinline', '');
+                        el.addEventListener('loadeddata', markLoaded, { once: true });
+                        el.addEventListener('error', markFailed, { once: true });
                         el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+                        el.src = img.src;
                     } else {
                         el = document.createElement('img');
-                        el.src = img.src;
                         el.alt = project.name;
-                        el.loading = 'lazy';
+                        el.width = dimensions.width;
+                        el.height = dimensions.height;
+                        el.loading = loadingHints.loading;
+                        el.fetchPriority = loadingHints.fetchPriority;
+                        el.setAttribute('fetchpriority', loadingHints.fetchPriority);
                         el.decoding = 'async';
+                        el.addEventListener('load', markLoaded, { once: true });
+                        el.addEventListener('error', markFailed, { once: true });
                         el.addEventListener('dragstart', function (e) { e.preventDefault(); });
+                        /* src 必须最后设置，确保尺寸和加载优先级在请求发出前已经就绪。 */
+                        el.src = img.src;
                     }
                     wrap.appendChild(el);
                     imagesEl.appendChild(wrap);
+
+                    /* 内存缓存命中时，load 事件可能已在插入前完成。 */
+                    if (el.complete && el.naturalWidth) {
+                        markLoaded();
+                    }
                 });
             }
             renderText();
