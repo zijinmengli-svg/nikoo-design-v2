@@ -166,6 +166,7 @@
 .card-02 { background: #fff; }
 .card-02 .c-proj-title {
   left: 32px;
+  top: calc(50% - 16px);
   font-size: 160px;
   letter-spacing: -0.035em;
 }
@@ -186,7 +187,7 @@
 /* More designs / Vibe Cooding：120px 居中 */
 .c-big {
   position: absolute;
-  left: 0; right: 0; top: 266px;
+  left: 0; right: 0; top: 250px;
   margin: 0; text-align: center;
   font-family: "HarmonyOS Sans SC", "PingFang SC", -apple-system, sans-serif;
   font-weight: 500; font-size: 120px; line-height: 1.4;
